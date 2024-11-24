@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 require_once '../vendor/autoload.php';
+require_once './../src/application.php';
 
 $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
     $_SERVER,
