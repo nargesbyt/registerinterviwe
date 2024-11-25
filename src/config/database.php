@@ -1,4 +1,4 @@
-<?php
+<?php namespace App\config;
 
 define('DB_HOST', 'localhost');
 define('DB_USER', 'company');

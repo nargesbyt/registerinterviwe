@@ -1,4 +1,4 @@
-<?php namespace App\Controller;
+<?php namespace App\Controllers;
 
 use App\Models\Interview;
 use Jenssegers\Blade\Blade;
@@ -6,13 +6,7 @@ use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class InterviewController{
-
-    protected $blade;
-
-    function __construct(Blade $blade){
-        $this->blade = $blade;
-    }
+class InterviewController extends BaseController{
 
     public function show($id)
     {

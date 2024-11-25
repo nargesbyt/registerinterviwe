@@ -1,9 +1,11 @@
 <?php namespace App\routes;
 
-use App\Controller\InterviewController;
+use App\Controllers\InterviewController;
+use App\Controllers\UserController;
+use App\Models\User;
 use League\Route\RouteCollection;
-use Controllers\HomeController;
-use Controllers\UserController;
+
+
 
 // Lazy-load callback function for controller methods
 function lazyLoadCallback($controller, $method, $params = [])
@@ -14,10 +16,26 @@ function lazyLoadCallback($controller, $method, $params = [])
     };
 }
 
-$router->map('GET', '/', [InterviewController::class, 'index']);
+$userController = new UserController($blade);
+
+
+$router->map('GET', '/interview', [InterviewController::class, 'index']);
 
 $router->map('GET', '/interview/{id}',[InterviewController::class, 'show']);
 
 $router->map('GET', '/add-interview', [InterviewController::class, 'create']);
 
 $router->map('POST', '/add-interview', [InterviewController::class, 'store']);
+
+$router->map('GET', '/', function ($request, $response) use ($blade) {
+    echo $blade->make('welcome')->render();
+});
+
+$router->map('GET', '/login', [$userController::class, 'showLogin']);
+
+$router->map('GET', '/register', [$userController::class, 'showRegister']);
+
+$router->map('POST', '/login', [$userController::class, 'login']);
+
+$router->map('POST', '/register', [$userController::class, 'register']);
+
