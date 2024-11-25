@@ -1,25 +1,22 @@
 <?php
 
-use App\Application;
-use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+require '../vendor/autoload.php';
+
+// Include RedBeanPHP and Blade configurations
+require '../config/redbean.php'; // Set up RedBeanPHP
+$blade = require '../src/config/blade.php'; // Set up Blade template engine
+
+// Initialize router
 use League\Route\Router;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use League\Route\RouteCollection;
 
-require_once '../vendor/autoload.php';
-require_once './../src/application.php';
+$router = new Router();
+$routes = new RouteCollection;
 
-$request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
-    $_SERVER,
-    $_GET,
-    $_POST,
-    $_COOKIE,
-    $_FILES
-);
+// Include routes from the routes folder
+require '../src/routes/web.php'; // This will load and define the routes
 
+// Dispatch the route
+$router->setRoutes($routes);
+$router->dispatch();
 
-$app = new Application($request);
-
-
-// send the response to the browser
-(new SapiEmitter)->emit($app->dispatch());

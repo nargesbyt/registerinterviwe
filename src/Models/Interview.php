@@ -31,12 +31,12 @@ class Interview
         
     }
 
-    public function getById($id)
+    public static function getById($id)
     {   
         return R::load('interview',$id);
        
     }
-    public function all(){
+    public static function all(){
         return R::findAll('interview');
     }
     
