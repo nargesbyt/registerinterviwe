@@ -10,6 +10,8 @@ use RedBeanPHP\R;
 use Laminas\Diactoros\ServerRequestFactory;
 use League\Route;
 use League\Route\Router;
+use PDO;
+use PDOException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -17,15 +19,27 @@ class Application
 {
 
     public Router $router;
+    public PDO $pdo;
+    public static $app;
     private ServerRequestInterface $request;
 
     public function __construct(ServerRequestInterface $request)
     {
+        try {
+            $this->pdo = new PDO('mysql:host=localhost;dbname=company_test', 'company', 'company_secret');
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); 
+
+        } catch (PDOException $e) {
+            // attempt to retry the connection after some timeout for example
+            die("Connection failed: " . $e->getMessage());
+
+        }
+        self::$app = $this;
         $this->request = $request;
         $this->router = new Router();
         $this->setupRoutes();
 
-        R::setup('mysql:host=127.0.0.1;port=3306;dbname=company_test','company', 'company_secret');
+        //R::setup('mysql:host=127.0.0.1;port=3306;dbname=company_test','company', 'company_secret');
     }
     private function setupRoutes()
     {

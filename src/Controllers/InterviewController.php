@@ -50,7 +50,7 @@ class InterviewController extends BaseController
     }
     public function index(ServerRequestInterface $request):ResponseInterface
     {
-        $interviews = Interview::all();
+        $interviews = Interview::list();
         return new HtmlResponse($this->blade->render('interviews.index', ['interviews' => $interviews]));  
     }
     /*public function find(ServerRequestInterface $requst,$interviewDate):ResponseInterface

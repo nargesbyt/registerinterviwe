@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `interviews` (
     gender int,
     employment_history_id int,
     father_job varchar(255),
-    additional_detailes text,
+    additional_details text,
     interview_result varchar(255),
     resume_file varchar(255),
     user_id int,
