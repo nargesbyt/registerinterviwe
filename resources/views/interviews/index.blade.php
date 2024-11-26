@@ -8,7 +8,7 @@
 <body>
     <h1>لیست مصاحبه ها</h1>
     <table>
-        @foreach ($interviewss as $interview)
+        @foreach ($interviews as $interview)
         <tr>
             <td>{{ $interview->firstname}}</td>
             <td>{{ $interview->lastname}}</td>

@@ -18,14 +18,12 @@ class UserController extends BaseController{
         $params = (array) $request->getParsedBody();
 
         // Validate input using Rakit Validation
-        $validator = new Validator;
-        $validation = $validator->make($params, [
+        
+        $validation = $this->validate($params, [
             'username' => 'required|min:3|unique:users,username',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
         ]);
-
-        $validation->validate();
 
         if ($validation->fails()) {
             $errors = $validation->errors()->all();

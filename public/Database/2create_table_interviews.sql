@@ -1,4 +1,3 @@
-use oop;
 CREATE TABLE IF NOT EXISTS `interviews` (
     id int NOT NULL auto_increment,
     firstname varchar(255),

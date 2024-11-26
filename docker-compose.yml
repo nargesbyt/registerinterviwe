@@ -9,19 +9,21 @@ services:
     environment:
       - DB_HOST=database
       - DB_USER=company
-      - DB_PASSWORD=company_secret 
-      - DB_NAME=company_test 
+      - DB_PASSWORD=company_secret
+      - DB_NAME=company_test
 
 
   database:
     image: mariadb:11.5.2
     environment:
       - MARIADB_USER=company
-      - MARIADB_PASSWORD=company_secret 
-      - MARIADB_DATABASE=company_test 
+      - MARIADB_PASSWORD=company_secret
+      - MARIADB_DATABASE=company_test
       - MARIADB_ROOT_PASSWORD=root_secret
     volumes:
       - ./docker/database:/docker-entrypoint-initdb.d
+    ports:
+      - 127.0.0.1:3306:3306
   
       
         

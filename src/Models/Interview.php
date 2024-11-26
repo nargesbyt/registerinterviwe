@@ -3,9 +3,10 @@ use RedBeanPHP\R;
 
 class Interview
 {
-    public static function save($data=array())
+    public static function save(array $data=[])
     {   
         $interview =R::dispense('interview');
+        
         $interview->firstname = $data['firstname'];
         $interview->lastname = $data['lastname'];
         $interview->interview_date = $data['interview_date'];

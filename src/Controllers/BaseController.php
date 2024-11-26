@@ -1,16 +1,31 @@
-<?php namespace App\Controllers;
+<?php
 
-class BaseController{
+namespace App\Controllers;
 
-    protected $blade;
-    function __construct($blade)
+use App\Application;
+use Jenssegers\Blade\Blade;
+use Rakit\Validation\Validator;
+
+abstract class BaseController
+{
+    protected Blade $blade;
+
+    public function __construct()
     {
-        $this->blade = $blade;
+        $this->blade = new Blade(dirname(__DIR__) . '/../../resources/views', dirname(__DIR__) . '/../../storage/cache');
     }
 
     protected function render($view, $data = [])
     {
-        echo $this->blade->make($view, $data)->render();
+        return $this->blade->make($view, $data)->render();
     }
 
+    protected function validate(array $data, array $rules, array $messages = [])
+    {
+        $validator = new Validator($messages);
+        $validation = $validator->make($data, $rules);
+
+        $validation->validate();
+        return $validation;
+    }
 }
