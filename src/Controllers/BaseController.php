@@ -13,7 +13,7 @@ abstract class BaseController
     public function __construct()
     {
         $this->blade = new Blade(__DIR__ . '/../../resources/views', dirname(__DIR__) . '/../../storage/cache');
-        //var_dump(dirname(__DIR__) . '/../../resources/views');die;
+        //var_dump(dirname(__DIR__) . '/../../storage/cache');
     }
 
     protected function render($view, $data = [])

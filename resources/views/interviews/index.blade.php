@@ -5,30 +5,31 @@
     <title>لیست مصاحبه ها</title>
 </head>
 
-<body>
+<body dir=rtl>
     <h1>لیست مصاحبه ها</h1>
-    <table>
+    <table style="border: 1px solid black;">
         @foreach ($interviews as $interview)
         <tr>
-            <td>{{ $interview->firstname}}</td>
-            <td>{{ $interview->lastname}}</td>
-            <td>{{ $interview->interview_date}}</td>
-            <td>{{ $interview->education}}</td>
-            <td>{{ $interview->age}}</td>
-            <td>{{ $interview->address_residence}}</td>
-            <td>{{ $interview->marital_status}}</td>
-            <td>{{ $interview->child_num}}</td>
-            <td>{{ $interview->phone_num}}</td>
-            <td>{{ $interview->career_field_id}}</td>
-            <td>{{ $interview->gender}}</td>
-            <td>{{ $interview->father_job}}</td>
-            <td>{{ $interview->additional_detailes}}</td>
-            <td>{{ $interview->resume_file}}</td>
+            <td  width="100" style="border: 1px solid black ;">{{ $interview['firstname'] }}</td>
+            <td  style="border: 1px solid black ;">{{ $interview['lastname'] }}</td>
+            <td  style="border: 1px solid black ;">{{ $interview['interview_date']}}</td>
+            <td  style="border: 1px solid black ;">{{ $interview['education'] }}</td>
+            <td  style="border: 1px solid black ;">{{ $interview['age'] }}</td>
+            <td  style="border: 1px solid black ;">{{ $interview['address_residence'] }}</td>
+            <td  style="border: 1px solid black ;">{{ $interview['marital_status'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['child_num'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['phone_num'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['career_field_id'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['gender'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['father_job'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['additional_detailes'] }}</td>
+            <td   width="100" style="border: 1px solid black ;">{{ $interview['resume_file'] }}</td>
             
         </tr>
+        @endforeach
     </table>
-
-    <a href="/add-interview">افزودن مصاحبه</a>
+       
+    <a href="/interview/create">افزودن مصاحبه</a>
 </body>
 
 </html>

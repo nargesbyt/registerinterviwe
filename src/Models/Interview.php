@@ -3,6 +3,8 @@
 use App\Application;
 use DateTime;
 use PDO;
+use PDOException;
+
 //use RedBeanPHP\R;
 
 class Interview
@@ -15,48 +17,49 @@ class Interview
 
     public static function save(array $data=[]):bool
     {   
-        /*$interview =R::dispense('interview');
-        $interview->firstname = $data['firstname'];
-        $interview->lastname = $data['lastname'];
-        $interview->interview_date = $data['interview_date'];
-        $interview->education = $data['education'];
-        $interview->age = $data['age'];
-        $interview->address_residence = $data['address_residence'];
-        $interview->marital_status = $data['marital_status'];
-        $interview->child_num = $data['child_num'];
-        $interview->phone_num = $data['phone_num'];
-        $interview->gender = $data['gender'];
-        $interview->father_job = $data['father_job'];
-        $interview->additional_detailes = $data['additional_detailes'];
-
-        $interview->resume_file = $data['resume_file'];
-
-        $interview->career_field_id = $data['career_field_id'];
-
-        $interview->employment_history_id = $data['employment_history_id'];
-
-        $interview->user_id = $data['user_id'];
-
-        R::store($interview);*/
+        //$interview =R::dispense('interview');
+       // R::store($interview);
         $pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
-        (firstname,lastname,interview_date,education,age,address_residence,marital_status,child_num,phone_num,
-        gender,father_job,additional_details,resume_file,career_field_id,employment_history_id,user_id) values 
-        (:firstname , :lastname , :interview_date, :education , :age , :address_residence , :marital_status,:child_num , 
-        :phone_num , :gender ,:father_job , :additional_datails , :resume_file, :career_field_id, :employment_history_id ,:user_id)');
-    
+        (firstname,lastname,education,age,address_residence,marital_status,phone_num,
+        gender,user_id) values 
+        (:firstname , :lastname , :education , :age , :address_residence , :marital_status , 
+        :phone_num , :gender ,:user_id)');
+        /*$statement->bindParam('firstname',$data['firstname']);
+        $statement->bindParam('lastname',$data['lastname']);
+        //$statement->bindParam('interview_date',time());
+        $statement->bindParam('education',$data['education']);
+        $statement->bindParam('age',$data['age']);
+        $statement->bindParam('address_residence',$data['address_residence']);
+        $statement->bindParam('marital_status',$data['marital_status']);
+        $statement->bindParam('phone_num',$data['phone_num']);
+        $statement->bindParam('gender',$data['gender']);
+        $statement->bindParam('user_id',$data['user_id']);
+        $result = $statement->execute();*/
         $result = $statement->execute($data);
+       // var_dump($data);die;
         return $result;
         
     }
 
-    public static function getById($id): ?array
+    public static function getById(int $id): ?array
     {   
         //return R::load('interview',$id);
         $pdo = Application::$app->pdo;
-        $statement = $pdo->prepare('Select * From `interviews` where id=:id');
-        $statement->execute(['id' => $id]);
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        try{
+            $statement = $pdo->prepare('Select * From `interviews` where id=:id');
+            //var_dump($id);
+            $statement->execute(['id' => $id]);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            //var_dump($result);  // This should show the fetched row or 'false' if no match is found
+
+            return $result === false ? null : $result;  // Return null if no results were found
+        }catch (PDOException $e) {
+            // Log or handle error here
+            error_log("PDO Error: " . $e->getMessage());
+            return null; // return null or handle differently
+        }
+        
         
 
        
@@ -64,6 +67,7 @@ class Interview
     public static function list(): ?array{
         $pdo = Application::$app->pdo;
         $statement = $pdo->query('Select * From `interviews`');
+        //var_dump($statement->fetchAll(PDO::FETCH_ASSOC));die;
         return $statement->fetchAll(PDO::FETCH_ASSOC);
         //return R::findAll('interview');
     }

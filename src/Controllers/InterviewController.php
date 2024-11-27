@@ -15,9 +15,9 @@ use Psr\Http\Message\ServerRequestInterface;
 class InterviewController extends BaseController
 {
 
-    public function get($id): ResponseInterface
-    {
-        $interview = Interview::getById($id);
+    public function get(ServerRequestInterface $request): ResponseInterface
+    {   $id = $request->getAttribute('id');
+        $interview = Interview::getById((int)$id);
         return new HtmlResponse($this->blade->render('interviews.show', ['interview' => $interview]));
         
     }
@@ -33,26 +33,36 @@ class InterviewController extends BaseController
         $params = (array)$request->getParsedBody();
 
         $validation = $this->validate($params, [
-            'firstname' => 'required|min:3',
-            'lastname' => 'required|min:4',
-            'interview_date' => 'required',
-            'education' => 'required|min:5'
+            'firstname' => 'required',
+            'lastname' => 'required',
+            //'interview_date' => 'required',
+            'education' => 'required'
         ]);
 
         if ($validation->fails()) {
             $errors = $validation->errors()->all();
-            $response->getBody()->write($this->render('register', ['errors' => $errors]));
+            $response->getBody()->write($this->blade->render('interviews.create', ['errors' => $errors]));
             return $response;
         }
 
-        Interview::save($params);
-        return new RedirectResponse('/');
+        $result = Interview::save($params);
+        if($result){
+             return new RedirectResponse('/interview');
+        }
+        return $response->withStatus(500,'server error');
+    
     }
     public function index(ServerRequestInterface $request):ResponseInterface
     {
         $interviews = Interview::list();
         return new HtmlResponse($this->blade->render('interviews.index', ['interviews' => $interviews]));  
     }
+
+    /*public function edit(ServerRequestInterface $request): ResponseInterface
+    {
+    
+        $response = new Response();
+    }*/
     /*public function find(ServerRequestInterface $requst,$interviewDate):ResponseInterface
     {
 

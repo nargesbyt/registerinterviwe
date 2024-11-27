@@ -45,9 +45,11 @@ class Application
     {
         $this->router->map('GET', '/interview', [InterviewController::class, 'index']);
 
-        $this->router->map('GET', '/interview/{id:number}', [InterviewController::class, 'get']);
+        $this->router->map('GET', '/interview/{id:\d+}', [InterviewController::class, 'get']);
 
         $this->router->map(['GET', 'POST'], '/interview/create', [InterviewController::class, 'create']);
+
+        $this->router->map(['GET', 'POST'], '/interview/edit', [InterviewController::class, 'edit']);
 
         /*$this->router->map('GET', '/', function ($request, $response) use ($this->blade) {
             return $blade->make('welcome')->render();
