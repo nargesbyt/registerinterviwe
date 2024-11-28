@@ -3,38 +3,48 @@
 use App\Controllers\BaseController;
 use Rakit\Validation\Validator;
 use App\Models\User;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use RedBeanPHP\R;
 
 class UserController extends BaseController{
 
-    public function showRegister($request, $response)
-    {
-        return $this->render('register');
-    }
-
     // Handle registration form submission
-    public function register($request, $response)
-    {
+    public function register(ServerRequestInterface $request):ResponseInterface
+    {   
+        if($request->getMethod()=='GET'){
+            return new HtmlResponse($this->blade->render('users.register'));
+        }
+        $response = new Response();
         $params = (array) $request->getParsedBody();
-
+        //var_dump($params); die;
         // Validate input using Rakit Validation
-        
+
+       
         $validation = $this->validate($params, [
-            'username' => 'required|min:3|unique:users,username',
+            'name' =>'required|min:3|max:255',
+            'username' => 'required|min:3|unique:users,username', //unique:table,column
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
         ]);
 
         if ($validation->fails()) {
-            $errors = $validation->errors()->all();
-            return $this->render('register', ['errors' => $errors]);
+
+            $_SESSION['errors'] = $validation->errors()->all();
+
+            // Redirect back to the registration page or form
+            return new RedirectResponse('/register');
+            //exit;
         }
 
         // Create the user using the User model
-        $user = User::createUser($params['username'], $params['password']);
+       /* $user = User::createUser($params['username'], $params['password']);
 
         // Redirect to login page after successful registration
-        return $response->withRedirect('/login');
+        return $response->withRedirect('/login');*/
     }
 
     // Show login form

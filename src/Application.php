@@ -21,6 +21,7 @@ class Application
     public Router $router;
     public PDO $pdo;
     public static $app;
+    public Session $session;
     private ServerRequestInterface $request;
 
     public function __construct(ServerRequestInterface $request)
@@ -57,11 +58,11 @@ class Application
 
         $this->router->map('GET', '/login', [UserController::class, 'showLogin']);
 
-        $this->router->map('GET', '/register', [UserController::class, 'showRegister']);
+        $this->router->map(['GET','POST'], '/auth/register', [UserController::class, 'register']);
 
         $this->router->map('POST', '/login', [UserController::class, 'login']);
 
-        $this->router->map('POST', '/register', [UserController::class, 'register']);
+       // $this->router->map('POST', '/auth/register', [UserController::class, 'register']);
     }
 
     public function dispatch(): ResponseInterface

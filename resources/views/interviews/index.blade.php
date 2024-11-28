@@ -8,6 +8,27 @@
 <body dir=rtl>
     <h1>لیست مصاحبه ها</h1>
     <table style="border: 1px solid black;">
+        <thead>
+            <tr>
+                <th>شماره</th>
+                <th>جنسیت</th>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>تاریخ مصاحبه</th>
+                <th>تحصیلات</th>
+                <th>سن</th>
+                <th>آدرس</th>
+                <th>وضعیت تاهل</th>
+                <th>تعداد فرزندان</th>
+                <th>شماره تلفن</th>
+                <th>شغل پدر</th>
+                <th>سمت کاری</th>
+                <th>توضیحات اضافی</th>
+                <th>فایل رزومه</th>
+                <th>شماره کاربر</th>
+                <th></th>
+            </tr>
+        </thead>
         @foreach ($interviews as $interview)
         <tr>
             <td width="100" style="border: 1px solid black ;">{{ $interview['id'] }}</td>
