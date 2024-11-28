@@ -72,7 +72,7 @@ class Interview
         //return R::findAll('interview');
     }
 
-    public static function update(array $params){
+    public static function update(array $params):bool{
         $interview = self::getById($params['id']);
         if($interview !== null ){
             $pdo = Application::$app->pdo;

@@ -14,6 +14,11 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class InterviewController extends BaseController
 {
+    public function index(ServerRequestInterface $request): ResponseInterface
+    {
+        $interviews = Interview::list();
+        return new HtmlResponse($this->blade->render('interviews.index', ['interviews' => $interviews]));
+    }
 
     public function get(ServerRequestInterface $request): ResponseInterface
     {   $id = $request->getAttribute('id');
@@ -52,17 +57,17 @@ class InterviewController extends BaseController
         return $response->withStatus(500,'server error');
     
     }
-    public function index(ServerRequestInterface $request):ResponseInterface
-    {
-        $interviews = Interview::list();
-        return new HtmlResponse($this->blade->render('interviews.index', ['interviews' => $interviews]));  
-    }
-
-    /*public function edit(ServerRequestInterface $request): ResponseInterface
-    {
     
+    public function edit(ServerRequestInterface $request): ResponseInterface
+    {
         $response = new Response();
-    }*/
+        $params = $request->getParsedBody();
+        
+        if(Interview::update($params)){
+            return new RedirectResponse('/interview');
+        }
+
+    }
     /*public function find(ServerRequestInterface $requst,$interviewDate):ResponseInterface
     {
 
