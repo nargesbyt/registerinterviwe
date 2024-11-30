@@ -50,17 +50,19 @@ class Application
 
         $this->router->map(['GET', 'POST'], '/interview/create', [InterviewController::class, 'create']);
 
-        $this->router->map(['GET', 'POST'], '/interview/edit', [InterviewController::class, 'edit']);
+        //$this->router->map(['GET', 'POST'], '/interview/edit', [InterviewController::class, 'edit']);
 
         /*$this->router->map('GET', '/', function ($request, $response) use ($this->blade) {
             return $blade->make('welcome')->render();
         });*/
 
-        $this->router->map('GET', '/login', [UserController::class, 'showLogin']);
+        $this->router->map('GET', '/auth/login', [UserController::class, 'showLogin']);
+
+        $this->router->map('POST', '/auth/login', [UserController::class, 'login']);
 
         $this->router->map(['GET','POST'], '/auth/register', [UserController::class, 'register']);
 
-        $this->router->map('POST', '/login', [UserController::class, 'login']);
+       
 
        // $this->router->map('POST', '/auth/register', [UserController::class, 'register']);
     }
