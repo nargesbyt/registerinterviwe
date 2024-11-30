@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Application;
-use App\UniqueRule;
+use App\Validation\Rules\UniqueRule;
 use Jenssegers\Blade\Blade;
 use Rakit\Validation\Validator;
 
@@ -13,7 +13,7 @@ abstract class BaseController
 
     public function __construct()
     {
-        $this->blade = new Blade(__DIR__ . '/../../resources/views', dirname(__DIR__) . '/../../storage/cache');
+        $this->blade = new Blade(__DIR__ . '/../../resources/views', dirname(__DIR__) . './../../storage/cache/views');
         //var_dump(__DIR__ . '/../../resources/views');
     }
 
@@ -25,7 +25,7 @@ abstract class BaseController
     protected function validate(array $data, array $rules, array $messages = [])
     {
         $validator = new Validator($messages);
-        $validator->addValidator('unique', new UniqueRule($pdo));
+        $validator->addValidator('unique', new UniqueRule);
         $validation = $validator->make($data, $rules);
 
         $validation->validate();

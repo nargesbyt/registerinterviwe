@@ -1,17 +1,18 @@
-<?php  namespace App;
+<?php  namespace App\Validation\Rules;
 
+use App\Application;
 use PDO;
 use Rakit\Validation\Rule;
 
 class UniqueRule extends Rule
 {
     protected $message = ":attribute must be unique in the database.";
-    protected $fillableParams = ['table', 'column', 'except'];
+    protected $fillableParams = ['table', 'column'];
     protected $pdo;
 
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        $this->pdo = $pdo;
+        $this->pdo = Application::$app->pdo;
     }
 
     public function check($value):bool
@@ -21,11 +22,8 @@ class UniqueRule extends Rule
         // getting parameters
         $column = $this->parameter('column');
         $table = $this->parameter('table');
-        $except = $this->parameter('except');
 
-        if ($except AND $except == $value) {
-            return true;
-        }
+
 
         // do query
         $stmt = $this->pdo->prepare("select count(*) as count from `{$table}` where `{$column}` = :value");

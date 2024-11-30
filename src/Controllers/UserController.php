@@ -3,11 +3,13 @@
 use App\Controllers\BaseController;
 use Rakit\Validation\Validator;
 use App\Models\User;
+use App\RedirectResponseWithErrors;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Rakit\Validation\ErrorBag;
 use RedBeanPHP\R;
 
 class UserController extends BaseController{
@@ -16,14 +18,14 @@ class UserController extends BaseController{
     public function register(ServerRequestInterface $request):ResponseInterface
     {   
         if($request->getMethod()=='GET'){
+            $errors = session()->flash('errors')?? new ErrorBag();
             return new HtmlResponse($this->blade->render('users.register'));
         }
-        $response = new Response();
+        //$response = new Response();
         $params = (array) $request->getParsedBody();
         //var_dump($params); die;
-        // Validate input using Rakit Validation
 
-       
+        // Validate input using Rakit Validation
         $validation = $this->validate($params, [
             'name' =>'required|min:3|max:255',
             'username' => 'required|min:3|unique:users,username', //unique:table,column
@@ -32,12 +34,12 @@ class UserController extends BaseController{
         ]);
 
         if ($validation->fails()) {
-
-            $_SESSION['errors'] = $validation->errors()->all();
-
+            session()->flash('errors',$validation->errors());
+            var_dump(session()->flash('errors'));die;
             // Redirect back to the registration page or form
-            return new RedirectResponse('/register');
-            //exit;
+            $response=  new RedirectResponseWithErrors('/auth/register');
+            return $response->withErrors($validation->errors());
+
         }
 
         // Create the user using the User model
