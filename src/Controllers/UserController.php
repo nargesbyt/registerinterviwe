@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 
+use App\Application;
 use App\Controllers\BaseController;
 use Rakit\Validation\Validator;
 use App\Models\User;
@@ -14,10 +15,11 @@ use RedBeanPHP\R;
 
 class UserController extends BaseController{
 
-    // Handle registration form submission
+  
     public function register(ServerRequestInterface $request):ResponseInterface
     {   
         if($request->getMethod()=='GET'){
+
             return new HtmlResponse($this->blade->render('users.register'));
         }
         $params = (array) $request->getParsedBody();
@@ -31,9 +33,12 @@ class UserController extends BaseController{
         ]);
 
         if ($validation->fails()) {
+
             session()->flash('errors',$validation->errors());
             session()->flash('old_inputs',$params);
             return new RedirectResponse('/auth/register');
+
+
 
         }
 
@@ -44,7 +49,6 @@ class UserController extends BaseController{
         return $response->withRedirect('/login');*/
     }
 
-    // Show login form
     public function showLogin($request, $response)
     {
         return $this->render('login');

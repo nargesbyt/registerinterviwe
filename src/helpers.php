@@ -1,6 +1,15 @@
 <?php
 
+use App\Application;
+use App\Response;
 use App\Session;
+
+if (! function_exists('app')) {
+    function app(): Application
+    {
+        return Application::$app;
+    }
+}
 
 if(!function_exists('session')){
     function session(){

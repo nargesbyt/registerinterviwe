@@ -17,13 +17,13 @@ class InterviewController extends BaseController
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $interviews = Interview::list();
-        return new HtmlResponse($this->blade->render('interviews.index', ['interviews' => $interviews]));
+        return new HtmlResponse($this->render('interviews.index', ['interviews' => $interviews]));
     }
 
     public function get(ServerRequestInterface $request): ResponseInterface
     {   $id = $request->getAttribute('id');
         $interview = Interview::getById((int)$id);
-        return new HtmlResponse($this->blade->render('interviews.show', ['interview' => $interview]));
+        return new HtmlResponse($this->render('interviews.show', ['interview' => $interview]));
         
     }
 
@@ -32,7 +32,7 @@ class InterviewController extends BaseController
         $response = new Response();
         if ($request->getMethod() == 'GET') {
 
-            $response->getBody()->write($this->blade->render('interviews.create'));
+            $response->getBody()->write($this->render('interviews.create'));
             return $response;
         }
         $params = (array)$request->getParsedBody();
@@ -46,7 +46,7 @@ class InterviewController extends BaseController
 
         if ($validation->fails()) {
             $errors = $validation->errors()->all();
-            $response->getBody()->write($this->blade->render('interviews.create', ['errors' => $errors]));
+            $response->getBody()->write($this->render('interviews.create', ['errors' => $errors]));
             return $response;
         }
 

@@ -23,6 +23,7 @@ class Application
     public static $app;
     public Session $session;
     private ServerRequestInterface $request;
+   
 
     public function __construct(ServerRequestInterface $request)
     {
@@ -37,6 +38,7 @@ class Application
         }
         self::$app = $this;
         $this->request = $request;
+        $this->session= new Session();
         $this->router = new Router();
         $this->setupRoutes();
 

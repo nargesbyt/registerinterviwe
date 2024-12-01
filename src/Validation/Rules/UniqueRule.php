@@ -7,12 +7,14 @@ use Rakit\Validation\Rule;
 class UniqueRule extends Rule
 {
     protected $message = ":attribute must be unique in the database.";
+
     protected $fillableParams = ['table', 'column'];
     protected $pdo;
 
     public function __construct()
     {
         $this->pdo = Application::$app->pdo;
+
     }
 
     public function check($value):bool
@@ -22,8 +24,6 @@ class UniqueRule extends Rule
         // getting parameters
         $column = $this->parameter('column');
         $table = $this->parameter('table');
-
-
 
         // do query
         $stmt = $this->pdo->prepare("select count(*) as count from `{$table}` where `{$column}` = :value");

@@ -10,6 +10,7 @@ use Rakit\Validation\Validator;
 
 abstract class BaseController
 {
+
     protected Blade $blade;
 
     public function __construct()
@@ -18,10 +19,9 @@ abstract class BaseController
         $this->blade->share('errors',session()->flash('errors')?? new ErrorBag());
         $this->blade->share('old_input', session()->flash('old_input') ?? []);
     }
-
     protected function render($view, $data = [])
     {
-        return $this->blade->make($view, $data)->render();
+        return $this->blade->render($view, $data);
     }
 
     protected function validate(array $data, array $rules, array $messages = [])
@@ -29,9 +29,10 @@ abstract class BaseController
         $validator = new Validator($messages);
         $validator->addValidator('unique', new UniqueRule);
         $validation = $validator->make($data, $rules);
-
+        if($validation->fails()){
+            session()->flash('errors',$validation->errors());
+        }
         $validation->validate();
-
         return $validation;
     }
 }
