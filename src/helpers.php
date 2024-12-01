@@ -7,3 +7,11 @@ if(!function_exists('session')){
         return new Session();
     }
 }
+
+if (!function_exists('old')) {
+    function old($key = null)
+    {
+        $inputs = session()->flash('old_input') ?? [];
+        return $inputs[$key] ?? "";
+    }
+}

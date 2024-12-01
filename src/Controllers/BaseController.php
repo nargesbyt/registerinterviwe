@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Application;
 use App\Validation\Rules\UniqueRule;
 use Jenssegers\Blade\Blade;
+use Rakit\Validation\ErrorBag;
 use Rakit\Validation\Validator;
 
 abstract class BaseController
@@ -13,8 +14,9 @@ abstract class BaseController
 
     public function __construct()
     {
-        $this->blade = new Blade(__DIR__ . '/../../resources/views', dirname(__DIR__) . './../../storage/cache/views');
-        //var_dump(__DIR__ . '/../../resources/views');
+        $this->blade = new Blade(__DIR__.'/../../resources/views',__DIR__.'/../../storage/cache/views');
+        $this->blade->share('errors',session()->flash('errors')?? new ErrorBag());
+        $this->blade->share('old_input', session()->flash('old_input') ?? []);
     }
 
     protected function render($view, $data = [])
@@ -29,6 +31,7 @@ abstract class BaseController
         $validation = $validator->make($data, $rules);
 
         $validation->validate();
+
         return $validation;
     }
 }

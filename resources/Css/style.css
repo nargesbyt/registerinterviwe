@@ -1,4 +1,5 @@
 body {
+    direction: rtl;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -6,11 +7,13 @@ body {
 }
 
 h2 {
+    direction: rtl;
     text-align: center;
     margin-top: 50px;
 }
 
 form {
+    direction: rtl;
     width: 300px;
     margin: 0 auto;
     background-color: white;

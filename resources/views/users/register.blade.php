@@ -6,36 +6,41 @@
     <title>Register</title>
     <link rel="stylesheet" href="./../../Css/style.css"> <!-- Optional CSS for styling -->
 </head>
-<body>
+<body dir="rtl">
 
-<h2>Create an Account</h2>
+<h2 >برای ثبت نام اطلاعات زیر را وارد کنید:</h2>
 
 <!-- Registration form -->
-<form action="/auth/register" method="POST">
+<form  action="/auth/register" method="POST">
 
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br><br>
+    <label for="name">نام :</label>
+    <input type="text" id="name" name="name" value="{{ old('name') }}" >
     @if($errors->has('name'))
         <span>{{$errors->first('name')}}</span>
-    @endif
+    @endif<br><br>
+    
 
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
+    <label for="username">نام کاربری :</label>
+    <input type="text" id="username" name="username" value="{{ old('username') }}">
     @if($errors->has('username'))
         <span>{{$errors->first('username')}}</span>
     @endif
+    <br><br>
+    
 
-    <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+    <label for="password">پسورد :</label>
+    <input type="password" id="password" name="password" value="{{ old('password') }}" >
     @if($errors->has('password'))
         <span>{{$errors->first('password')}}</span>
-    @endif
+    @endif<br><br>
+    
 
-    <label for="confirm_password">Confirm Password:</label>
-    <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+    <label for="confirm_password">تکرار پسورد :</label>
+    <input type="password" id="confirm_password" name="confirm_password"  value="{{ old('confirm_password') }}">
     @if($errors->has('confirm_password'))
         <span>{{$errors->first('confirm_password')}}</span>
-    @endif
+    @endif<br><br>
+    
 
     <button type="submit" name="register">ثبت نام</button>
 </form>

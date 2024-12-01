@@ -18,12 +18,9 @@ class UserController extends BaseController{
     public function register(ServerRequestInterface $request):ResponseInterface
     {   
         if($request->getMethod()=='GET'){
-            $errors = session()->flash('errors')?? new ErrorBag();
             return new HtmlResponse($this->blade->render('users.register'));
         }
-        //$response = new Response();
         $params = (array) $request->getParsedBody();
-        //var_dump($params); die;
 
         // Validate input using Rakit Validation
         $validation = $this->validate($params, [
@@ -35,10 +32,8 @@ class UserController extends BaseController{
 
         if ($validation->fails()) {
             session()->flash('errors',$validation->errors());
-            var_dump(session()->flash('errors'));die;
-            // Redirect back to the registration page or form
-            $response=  new RedirectResponseWithErrors('/auth/register');
-            return $response->withErrors($validation->errors());
+            session()->flash('old_inputs',$params);
+            return new RedirectResponse('/auth/register');
 
         }
 
