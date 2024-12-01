@@ -35,7 +35,7 @@ class UserController extends BaseController{
         ]);
 
         if ($validation->fails()) {
-            return redirect('/auth/register')->withErrors($validation->errors());
+            return redirect('/auth/register');
 
         }
 

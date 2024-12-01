@@ -21,6 +21,9 @@ abstract class BaseController
         $validation = $validator->make($data, $rules);
 
         $validation->validate();
+        if($validation->fails()){
+            response()->withErrors($validation->errors());
+        }
         return $validation;
     }
 }
