@@ -38,7 +38,7 @@ class Application
         }
         self::$app = $this;
         $this->request = $request;
-        $this->session= new Session();
+        //$this->session= new Session();
         $this->router = new Router();
         $this->setupRoutes();
 

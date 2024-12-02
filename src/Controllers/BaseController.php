@@ -16,8 +16,8 @@ abstract class BaseController
     public function __construct()
     {
         $this->blade = new Blade(__DIR__.'/../../resources/views',__DIR__.'/../../storage/cache/views');
-        $this->blade->share('errors',session()->flash('errors')?? new ErrorBag());
-        $this->blade->share('old_input', session()->flash('old_input') ?? []);
+        //$this->blade->share('errors',session()->flash('errors')?? new ErrorBag());
+        //$this->blade->share('old_input', session()->flash('old_input') ?? []);
     }
     protected function render($view, $data = [])
     {

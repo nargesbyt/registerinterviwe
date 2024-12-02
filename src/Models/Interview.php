@@ -21,22 +21,23 @@ class Interview
        // R::store($interview);
         $pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
-        (firstname,lastname,education,age,address_residence,marital_status,phone_num,
-        gender,user_id) values 
-        (:firstname , :lastname , :education , :age , :address_residence , :marital_status , 
-        :phone_num , :gender ,:user_id)');
-        /*$statement->bindParam('firstname',$data['firstname']);
+        (firstname,lastname,education,age,address,maritalStatus,phoneNum,
+        gender) values 
+        (:firstname , :lastname , :education , :age , :address , :maritalStatus , 
+        :phoneNum , :gender )');
+        $statement->bindParam('firstname',$data['firstname']);
         $statement->bindParam('lastname',$data['lastname']);
         //$statement->bindParam('interview_date',time());
         $statement->bindParam('education',$data['education']);
-        $statement->bindParam('age',$data['age']);
-        $statement->bindParam('address_residence',$data['address_residence']);
-        $statement->bindParam('marital_status',$data['marital_status']);
-        $statement->bindParam('phone_num',$data['phone_num']);
-        $statement->bindParam('gender',$data['gender']);
-        $statement->bindParam('user_id',$data['user_id']);
-        $result = $statement->execute();*/
-        $result = $statement->execute($data);
+        //var_dump((int)$data['age']);die;
+        $statement->bindParam('age',intval($data['age']));
+        $statement->bindParam('address',$data['address']);
+        $statement->bindParam('maritalStatus',$data['maritalStatus']);
+        $statement->bindParam('phoneNum',$data['phoneNum']);
+        $statement->bindParam('gender',intval($data['gender']));
+        
+        $result = $statement->execute();
+        //$result = $statement->execute($data);
        // var_dump($data);die;
         return $result;
         
