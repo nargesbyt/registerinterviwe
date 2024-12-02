@@ -10,46 +10,69 @@
     <table style="border: 1px solid black;">
         <thead>
             <tr>
-                <th>شماره</th>
-                <th>جنسیت</th>
+                <th>تاریخ مصاحبه</th>
+                <th>ساعت شروع مصاحبه</th>
+                <th>سمت </th>
                 <th>نام</th>
                 <th>نام خانوادگی</th>
-                <th>تاریخ مصاحبه</th>
                 <th>تحصیلات</th>
+                <th>دانشگاه</th>
                 <th>سن</th>
-                <th>آدرس</th>
-                <th>وضعیت تاهل</th>
+                <th>محل زندگی </th>
+                <th>تاهل</th>
                 <th>تعداد فرزندان</th>
+                <th>کاربری کامپیوتر</th>
                 <th>شماره تلفن</th>
+                <th>سابقه کاری</th>
                 <th>شغل پدر</th>
-                <th>سمت کاری</th>
-                <th>توضیحات اضافی</th>
-                <th>فایل رزومه</th>
-                <th>شماره کاربر</th>
-                <th></th>
+                <th>دلیل نیاز به کار</th>
+                <th>کارآموزی</th>
+                <th>اسم زومیلا را قبلا شنیده</th>
+                <th>دوستی داشته که در زومیلا کار کنه</th>
+                <th>چطور تا سر کار میاد</th>
+                <th>اوقات فراغت</th>
+                <th>آخرین بار که کتاب خوانده وچه کتابی</th>
+                <th>درون گرا یا برون گرا</th>
+                <th>پوشش</th>
+                <th>محل آگهی کار</th>
+                <th>سطح زبان انگلیسی</th>
+                <th>قصد مهاجرت</th>
+                <th>نتیجه نهایی و امتیاز</th>
             </tr>
         </thead>
         @foreach ($interviews as $interview)
         <tr>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['id'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['gender'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['inteviewDate'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['inteviewTime'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['careerFieldId'] }}</td>
             <td width="100" style="border: 1px solid black ;">{{ $interview['firstname'] }}</td>
             <td width="100" style="border: 1px solid black ;">{{ $interview['lastname'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['interview_date']}}</td>
             <td width="100" style="border: 1px solid black ;">{{ $interview['education'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['university'] }}</td>
             <td width="100" style="border: 1px solid black ;">{{ $interview['age'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['address_residence'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['marital_status'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['child_num'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['phone_num'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['father_job'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['career_field_id'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['additional_detailes'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['resume_file'] }}</td>
-            <td width="100" style="border: 1px solid black ;">{{ $interview['user_id'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['address'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['maritalStatus'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['childNum'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['computerSkill'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['phoneNum'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['employmentHistory'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['fatherJob'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['reasonForJob'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['internship'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['knowAboutUs'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['haveFriendHere'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['wayToCome'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['lastReadBook'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['characterType'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['coverType'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['employmentAdv'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['englishLevel'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['migrationIntention'] }}</td>
+            <td width="100" style="border: 1px solid black ;">{{ $interview['interviewResult'] }}</td>
         </tr>
         @endforeach
     </table>
+    <br><br>
 
     <a href="/interview/create">افزودن مصاحبه</a>
 </body>

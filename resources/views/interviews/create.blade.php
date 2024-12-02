@@ -14,28 +14,34 @@
 
         <label for="interviewDate">تاریخ مصاحبه</label>
         <input type="date" name="interviewDate" id="interviewDate" required>
-        <br>
+        <br><br>
         <label for="interviewTime">ساعت شروع مصاحبه</label>
         <input type="text" name="interviewTime" id="interviewTime" required>
-        <br>
-        <label for="careerField">سمت </label>
-        <input type="text" name="careerField" id="careerField" required>
-        <br>
+        <br><br>
+        <label for="careerFieldId">سمت </label>
+        <select name="careerFieldId" id="careerFieldId" required>
+            <option value="" disabled selected>سمت را انتخاب کنید</option>
+            @foreach ($careerFields as $field)
+                <option value="{{ $field['id'] }}">{{ $field['field'] }}</option>
+            @endforeach
+        </select>
+    
+        <br><br>
         <label for="firstname">نام</label>
         <input type="text" name="firstname" id="firstname" required>
-        <br>
+        <br><br>
         <label for="lastname">نام خانوادگی </label>
         <input type="text" name="lastname" id="lastname" required>
-        <br>
+        <br><br>
         <label for="education">تحصیلات </label>
         <input type="text" name="education" id="education">
-        <br>
+        <br><br>
         <label for="age">سن</label>
         <input type="text" name="age" id="age" required>
-        <br>
+        <br><br>
         <label for="address">آدرس </label>
         <input type="text" name="address" id="address">
-        <br>
+        <br><br>
         <label for="maritalStatus">وضعیت تاهل </label>
         <input type="text" name="maritalStatus" id="maritalStatus">
         <br>
@@ -52,7 +58,7 @@
         <input type="" name="computerLiteracy" id="computerLiteracy">
         <br>
         <label for="phoneNum">شماره موبایل</label>
-        <input type="text" name="phoneNum" id="phoneNum">
+        <input type="text" name="phoneNum" id="phoneNum" placeholder="09XX XXX XXXX">
         <br>
         <label for="gender">جنسیت </label>
         <input type="text" name="gender" id="gender">

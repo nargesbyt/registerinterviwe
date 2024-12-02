@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\CareerField;
 use App\Models\Interview;
 use Jenssegers\Blade\Blade;
 use Laminas\Diactoros\Response;
@@ -27,12 +28,13 @@ class InterviewController extends BaseController
         
     }
 
+
     public function create(ServerRequestInterface $request): ResponseInterface
     {
         $response = new Response();
         if ($request->getMethod() == 'GET') {
-
-            $response->getBody()->write($this->render('interviews.create'));
+            $careerFields = CareerField::list();
+            $response->getBody()->write($this->render('interviews.create',['careerFields'=>$careerFields]));
             return $response;
         }
         $params = (array)$request->getParsedBody();
@@ -40,8 +42,10 @@ class InterviewController extends BaseController
         $validation = $this->validate($params, [
             'firstname' => 'required',
             'lastname' => 'required',
-            //'interview_date' => 'required',
-            'education' => 'required'
+            'interviewDate' => 'required',
+            'interviewTime'=>'required',
+            'careerFieldId'=>'required',
+
         ]);
 
         if ($validation->fails()) {
