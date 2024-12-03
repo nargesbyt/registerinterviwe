@@ -13,7 +13,7 @@ class CareerField{
     public static function list() {
         // Fetch career fields from the database
         $pdo = Application::$app->pdo;
-        $stmt = $pdo->query('SELECT id, field FROM careerFields');
+        $stmt = $pdo->query('SELECT id, field FROM careerfields');
         $careerFields = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $careerFields;
     } 
