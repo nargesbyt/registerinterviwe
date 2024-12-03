@@ -34,11 +34,12 @@ class InterviewController extends BaseController
         $response = new Response();
         if ($request->getMethod() == 'GET') {
             $careerFields = CareerField::list();
+            //var_dump($careerFields);die;
             $response->getBody()->write($this->render('interviews.create',['careerFields'=>$careerFields]));
             return $response;
         }
         $params = (array)$request->getParsedBody();
-
+        //var_dump($params);die;
         $validation = $this->validate($params, [
             'firstname' => 'required',
             'lastname' => 'required',
