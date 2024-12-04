@@ -39,7 +39,7 @@ class InterviewController extends BaseController
             return $response;
         }
         $params = (array)$request->getParsedBody();
-        //var_dump($params);die;
+        var_dump($params['interviewDate']);die;
         $validation = $this->validate($params, [
             'firstname' => 'required',
             'lastname' => 'required',

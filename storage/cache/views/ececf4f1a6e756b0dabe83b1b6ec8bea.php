@@ -4,9 +4,12 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/css/persian-datepicker.css" />
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="./../../Css/style.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-date/dist/persian-date.js"></script>
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script>
+
     <title>افزودن فرم مصاحبه</title>
 </head>
 
@@ -16,7 +19,7 @@
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     <div class="container mt-5">
         <h2>فرم مصاحبه جدید</h2>
-        <form  id="create_interview" action="/interview/create" method="post">
+        <form id="create_interview" action="/interview/create" method="post" novalidate>
             <div class="row">
                 <div class="col-md-2">
                     <script type="text/javascript">
@@ -26,43 +29,50 @@
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
-                    <input type="text"  class="example1 form-control" name="interviewDate" id="interviewDate" />
+                    <input type="text" class="example1 form-control" name="interviewDate" id="interviewDate" />
+                    <div class="invalid-feedback" id="error-interviewDate"></div> 
                 </div>
                 <div class="col-md-2">
                     <label for="interviewTime">ساعت شروع مصاحبه</label>
                     <input type="text" class="form-control" name="interviewTime" id="interviewTime">
+                    <div class="invalid-feedback" id="error-interviewTime"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="careerFieldId">سمت </label>
-                    <select class="form-control" name="careerFieldId" required>
+                    <select class="form-control" name="careerFieldId">
                         <option value="" disabled selected>سمت را انتخاب کنید</option>
                         <?php $__currentLoopData = $careerFields; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $field): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($field['id']); ?>"><?php echo e($field['field']); ?></option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
-
+                    <div class="invalid-feedback" id="error-careerFieldId"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="firstname">نام</label>
                     <input type="text" class="form-control" name="firstname" id="firstname" maxlength="20">
+                    <div class="invalid-feedback" id="error-firstname"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="lastname">نام خانوادگی </label>
                     <input type="text" class="form-control" name="lastname" id="lastname" maxlength="20">
+                    <div class="invalid-feedback" id="error-lastname"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="education">تحصیلات </label>
                     <input type="text" class="form-control" name="education" id="education" maxlength="50">
+                    <div class="invalid-feedback" id="error-education"></div>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-2">
                     <label for="age">سن</label>
-                    <input type="number" class="form-control" name="age" id="age" min="8" max="99" >
+                    <input type="number" class="form-control" name="age" id="age" min="8" max="99">
+                    <div class="invalid-feedback" id="error-age"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="address">آدرس </label>
                     <input type="text" class="form-control" name="address" id="address" maxlength="50">
+                    <div class="invalid-feedback" id="error-address"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="maritalStatus">وضعیت تاهل </label>
@@ -72,10 +82,12 @@
                         <option value="2">نامزد</option>
                         <option value="3">مطلقه</option>
                     </select>
+                    <div class="invalid-feedback" id="error-maritalStatus"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="childNum">تعداد فرزندان</label>
                     <input type="number" class="form-control" name="childNum" id="childNum" min="0" max="10">
+                    <div class="invalid-feedback" id="error-childNum"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="computerLiteracy">کاربری کامپیوتر</label>
@@ -85,10 +97,12 @@
                         <option value="intermediate">متوسط</option>
                         <option value="expert">حرفه ای</option>
                     </select>
+                    <div class="invalid-feedback" id="error-computerLiteracy"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="phoneNum">شماره موبایل</label>
                     <input type="text" class="form-control" name="phoneNum" id="phoneNum" placeholder="09XX XXX XXXX">
+                    <div class="invalid-feedback" id="error-phoneNum"></div>
                 </div>
             </div>
             <div class="row mt-3">
@@ -97,17 +111,20 @@
                     <textarea class="form-control" name="employmentHistory" id="employmentHistory" rows="3">
 
                     </textarea>
-                        
+                    <div class="invalid-feedback" id="error-employmentHistory"></div>
+
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-4">
                     <label for="fatherJob">شغل پدر یا همسر</label>
                     <input type="text" class="form-control" name="fatherJob" id="fatherJob">
+                    <div class="invalid-feedback" id="error-fatherJob"></div>
                 </div>
                 <div class="col-md-4">
                     <label for="reasonForJob">دلیل نیاز به کار</label>
                     <input type="text" class="form-control" name="reasonForJob" id="reasonForJob">
+                    <div class="invalid-feedback" id="error-reasonForJob"></div>
                 </div>
                 <div class="col-md-4">
                     <label for="internship">کارآموزی</label>
@@ -115,6 +132,7 @@
                         <option value="1">بله</option>
                         <option value="0">خیر</option>
                     </select>
+                    <div class="invalid-feedback" id="error-reasonForJob"></div>
                 </div>
 
             </div>
@@ -190,8 +208,8 @@
     </div>
 
     <!-- Bootstrap JS (via CDN) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../Js/form-validation.js"></script> 
+
+    <script src="../../Js/form-validation.js"></script>
 
 </body>
 

@@ -21,14 +21,14 @@ class Interview
        // R::store($interview);
         $pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
-        (firstname,lastname,education,age,address,maritalStatus,phoneNum,
+        (firstname,lastname,education,address,maritalStatus,phoneNum,
         interviewDate,careerFieldId) values 
-        (:firstname , :lastname , :education , :age , :address , :maritalStatus , 
+        (:firstname , :lastname , :education  , :address , :maritalStatus , 
         :phoneNum , :interviewDate, :careerFieldId)');
         $statement->bindParam('firstname',$data['firstname']);
         $statement->bindParam('lastname',$data['lastname']);
         $statement->bindParam('education',$data['education']);
-        $statement->bindParam('age',$data['age']);
+       // $statement->bindParam('age',$data['age']);
         $statement->bindParam('address',$data['address']);
         $statement->bindParam('maritalStatus',$data['maritalStatus']);
         $statement->bindParam('phoneNum',$data['phoneNum']);
