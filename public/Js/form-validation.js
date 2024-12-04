@@ -14,7 +14,7 @@ $(document).ready(function() {
         }
 
         // Validate careerFieldId
-        if ($("#careeFieldId").val() === "") {
+        if ($("#careerFieldId").val() === "") {
             alert("پر کردن فیلد سمت الزامی است.");
             isValid = false;
         }

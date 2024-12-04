@@ -4,9 +4,11 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/css/persian-datepicker.css" />
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-date/dist/persian-date.js"></script>
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script>
+
     <title>افزودن فرم مصاحبه</title>
 </head>
 
@@ -16,7 +18,7 @@
     @endforeach
     <div class="container mt-5">
         <h2>فرم مصاحبه جدید</h2>
-        <form  id="create_interview" action="/interview/create" method="post">
+        <form id="create_interview" action="/interview/create" method="post">
             <div class="row">
                 <div class="col-md-2">
                     <script type="text/javascript">
@@ -26,7 +28,7 @@
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
-                    <input type="text"  class="example1 form-control" name="interviewDate" id="interviewDate" />
+                    <input type="text" class="example1 form-control" name="interviewDate" id="interviewDate" />
                 </div>
                 <div class="col-md-2">
                     <label for="interviewTime">ساعت شروع مصاحبه</label>
@@ -58,7 +60,7 @@
             <div class="row mt-3">
                 <div class="col-md-2">
                     <label for="age">سن</label>
-                    <input type="number" class="form-control" name="age" id="age" min="8" max="99" >
+                    <input type="number" class="form-control" name="age" id="age" min="8" max="99">
                 </div>
                 <div class="col-md-2">
                     <label for="address">آدرس </label>
@@ -97,7 +99,7 @@
                     <textarea class="form-control" name="employmentHistory" id="employmentHistory" rows="3">
 
                     </textarea>
-                        
+
                 </div>
             </div>
             <div class="row mt-3">
@@ -190,8 +192,8 @@
     </div>
 
     <!-- Bootstrap JS (via CDN) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../Js/form-validation.js"></script> 
+
+    <script src="../../Js/form-validation.js"></script>
 
 </body>
 

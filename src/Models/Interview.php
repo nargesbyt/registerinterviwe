@@ -22,19 +22,19 @@ class Interview
         $pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
         (firstname,lastname,education,age,address,maritalStatus,phoneNum,
-        interviewDate,interviewTime,careerFieldId,gender) values 
+        interviewDate,careerFieldId) values 
         (:firstname , :lastname , :education , :age , :address , :maritalStatus , 
-        :phoneNum , :interviewDate, :interviewTime, :careerFieldId, :gender )');
+        :phoneNum , :interviewDate, :careerFieldId)');
         $statement->bindParam('firstname',$data['firstname']);
         $statement->bindParam('lastname',$data['lastname']);
         $statement->bindParam('education',$data['education']);
-        $statement->bindParam('age',intval($data['age']));
+        $statement->bindParam('age',$data['age']);
         $statement->bindParam('address',$data['address']);
         $statement->bindParam('maritalStatus',$data['maritalStatus']);
         $statement->bindParam('phoneNum',$data['phoneNum']);
-        $statement->bindParam('gender',intval($data['gender']));
+        //$statement->bindParam('gender',intval($data['gender']));
         $statement->bindParam('interviewDate',$data['interviewDate']);
-        $statement->bindParam('interviewTime',$data['interviewTime']);
+        //$statement->bindParam('interviewTime',$data['interviewTime']);
         $statement->bindParam('careerFieldId',intval($data['careerFieldId']));
         
         $result = $statement->execute();
