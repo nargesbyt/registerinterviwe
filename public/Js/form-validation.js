@@ -27,11 +27,11 @@ $(document).ready(function() {
                     return;
                 }
                 let gregorianDate = persianDateObject.toGregorian();
-                    // فرمت‌دهی تاریخ میلادی به فرمت MySQL (YYYY-MM-DD)
-                    let mysqlFormattedDate = `${gregorianDate.year}-${String(gregorianDate.month).padStart(2, '0')}-${String(gregorianDate.day).padStart(2, '0')}`;
+                console.log("تاریخ میلادی: ", gregorianDate);
+                let mysqlFormattedDate = `${gregorianDate.year}-${String(gregorianDate.month).padStart(2, '0')}-${String(gregorianDate.day).padStart(2, '0')}`;
     
                     // قرار دادن تاریخ میلادی در فیلد ورودی
-                    $("#interviewDate").val(mysqlFormattedDate);  
+                $("#interviewDate").val(mysqlFormattedDate);  
     
                 } catch (error) {
                     console.error("خطا در پردازش تاریخ شمسی:", error);
