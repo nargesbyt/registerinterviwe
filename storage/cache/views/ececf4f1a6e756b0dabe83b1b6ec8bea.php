@@ -24,8 +24,16 @@
                 <div class="col-md-2">
                     <script type="text/javascript">
                         $(document).ready(function() {
-                            $(".example1").pDatepicker();
-                        });
+                            $(".example1").pDatepicker({
+                                format: 'YYYY/MM/DD', 
+                                initialValue: true,   
+                                altFormat: 'YYYY-MM-DD',  // فرمت تاریخ برای ذخیره‌سازی یا استفاده در پایگاه داده
+                                onSelect: function() {
+                                    let selectedDate = $("#interviewDate").val();
+                                    console.log("تاریخ انتخابی: ", selectedDate);
+                                }
+                                });
+                            })
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
