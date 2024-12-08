@@ -4,15 +4,6 @@ $(document).ready(function() {
 
         $(".invalid-feedback").text("").hide();
         $(".form-control").removeClass("is-invalid");
-
-       /* $('#interviewDate').persianDatepicker({
-            format: 'YYYY/MM/DD', // فرمت تاریخ
-            onSelect: function() {
-                let selectedDate = $('#interviewDate').val();
-                console.log("تاریخ انتخابی شمسی: ", selectedDate);
-            }
-        });*/
-    
         let persianDateInput = $("#interviewDate").val();  
 
 
