@@ -12,27 +12,27 @@
             <div class="col-md-12 mb-8">
                 <div class="card">
                     <div class="card-body">
-                        <!--<h5 class="card-title">{{ $interview['firstname'] }} {{ $interview['lastname'] }}</h5>
-                        <p><strong>تاریخ مصاحبه:</strong>{{ $interview['inteviewDate'] }}</p>-->
+                        <!--<h5 class="card-title"><?php echo e($interview['firstname']); ?> <?php echo e($interview['lastname']); ?></h5>
+                        <p><strong>تاریخ مصاحبه:</strong><?php echo e($interview['inteviewDate']); ?></p>-->
                         <div class="container mt-5">
                         <div class="row">
                             <div class="col-md-2">
-                                <p><strong>تاریخ مصاحبه:</strong>{{ $interview['inteviewDate'] }}</p>
+                                <p><strong>تاریخ مصاحبه:</strong><?php echo e($interview['inteviewDate']); ?></p>
                             </div>
                             <div class="col-md-2">
-                                <p><strong>ساعت شروع مصاحبه :</strong>{{ $interview['inteviewTime'] }}</p>
+                                <p><strong>ساعت شروع مصاحبه :</strong><?php echo e($interview['inteviewTime']); ?></p>
                             </div>
                             <div class="col-md-2">
-                                <p><strong>سمت :</strong>{{ $interview['careerFieldId'] }}</p>
+                                <p><strong>سمت :</strong><?php echo e($interview['careerFieldId']); ?></p>
                             </div>
                             <div class="col-md-2">
-                                <p><strong>نام :</strong>{{ $interview['firstname'] }}</p>
+                                <p><strong>نام :</strong><?php echo e($interview['firstname']); ?></p>
                             </div>
                             <div class="col-md-2">
-                                <p><strong>نام خانوادگی :</strong>{{ $interview['lastname'] }}</p>
+                                <p><strong>نام خانوادگی :</strong><?php echo e($interview['lastname']); ?></p>
                             </div>
                             <div class="col-md-2">
-                                <p><strong>تحصیلات :</strong>{{ $interview['education'] }}</p>
+                                <p><strong>تحصیلات :</strong><?php echo e($interview['education']); ?></p>
                             </div>
                         </div>
                         </div>
@@ -45,4 +45,4 @@
     </div>
 </body>
 
-</html>
+</html><?php /**PATH /home/narges/registerinterviwe/resources/views/interviews/show.blade.php ENDPATH**/ ?>

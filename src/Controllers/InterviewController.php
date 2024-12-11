@@ -17,8 +17,27 @@ class InterviewController extends BaseController
 {
     public function index(ServerRequestInterface $request): ResponseInterface
     {
-        $interviews = Interview::list();
-        return new HtmlResponse($this->render('interviews.index', ['interviews' => $interviews]));
+        // Get the current page from the query string (default is 1)
+        $page = (int) ($request->getQueryParams()['page'] ?? 1);
+
+        // Set the number of records per page
+        $recordsPerPage = 10;
+
+        // Fetch the interviews for the current page
+        $interviews = Interview::list($page, $recordsPerPage);
+
+        // Get the total number of interviews
+        $totalCount = Interview::getTotalCount();
+
+        // Calculate total pages
+        $totalPages = ceil($totalCount / $recordsPerPage);
+
+        // Pass data to the view
+        return new HtmlResponse($this->render('interviews.index', [
+            'interviews' => $interviews,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+        ]));
     }
 
     public function get(ServerRequestInterface $request): ResponseInterface

@@ -85,14 +85,29 @@ class Interview extends \RedBeanPHP\SimpleModel
             return null; // return null or handle differently
         }
     }
-    public static function list(): ?array
+    public static function list(int $page = 1, int $recordsPerPage = 10): ?array
     {
         $pdo = Application::$app->pdo;
-        $statement = $pdo->query('Select * From `interviews`');
-        //var_dump($statement->fetchAll(PDO::FETCH_ASSOC));die;
+
+        // Calculate the offset based on the current page and records per page
+        $offset = max(0,($page - 1) * $recordsPerPage);
+
+        // Prepare the query with LIMIT and OFFSET for pagination
+        $statement = $pdo->prepare("SELECT * FROM `interviews` LIMIT :limit OFFSET :offset");
+        $statement->bindValue(':limit', $recordsPerPage, PDO::PARAM_INT);
+        $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $statement->execute();
+
         return $statement->fetchAll(PDO::FETCH_ASSOC);
-        //return R::findAll('interview');
     }
+
+    public static function getTotalCount(): int
+    {
+        $pdo = Application::$app->pdo;
+        $statement = $pdo->query('SELECT COUNT(*) FROM `interviews`');
+        return $statement->fetchColumn();
+    }
+
 
     public static function update(array $params): bool
     {
