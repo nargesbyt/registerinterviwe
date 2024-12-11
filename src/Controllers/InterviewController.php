@@ -39,7 +39,7 @@ class InterviewController extends BaseController
             return $response;
         }
         $params = (array)$request->getParsedBody();
-        var_dump($params['interviewDate']);die;
+        //var_dump($params['interviewDate']);die;
         $validation = $this->validate($params, [
             'firstname' => 'required',
             'lastname' => 'required',
@@ -59,6 +59,7 @@ class InterviewController extends BaseController
         if($result){
              return new RedirectResponse('/interview');
         }
+        var_dump($response->getBody()->write('error with database')); die;
         return $response->withStatus(500,'server error');
     
     }

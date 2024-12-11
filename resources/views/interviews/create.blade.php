@@ -35,52 +35,6 @@
                                 });
                             })
 
-                            
-                        /*<script>
-                        $(document).ready(function() {
-                            $('#datepicker').persianDatepicker();
-
-                            // When the user selects a date, get the Persian date
-                            $('#datepicker').on('change', function() {
-                                var persianDate = $(this).val();
-                                
-                                // Send the selected Persian date to the backend via AJAX
-                                $.ajax({
-                                    url: '/convert-date',
-                                    method: 'POST',
-                                    data: {
-                                        persian_date: persianDate,
-                                        _token: '{{ csrf_token() }}'
-                                    },
-                                    success: function(response) {
-                                        console.log(response);
-                                    }
-                                });
-                            });
-                        });
-                        
-                        class DateController extends Controller
-{
-    public function convertDate(Request $request)
-    {
-        // Get the Persian date sent from the frontend (e.g., '1403/10/16')
-        $persianDate = $request->input('persian_date');
-        
-        // Convert Persian date (Jalali) to Gregorian
-        $persianArray = explode('/', $persianDate);
-        $year = $persianArray[0];
-        $month = $persianArray[1];
-        $day = $persianArray[2];
-
-        $gregorianDate = Jalalian::fromFormat('Y/m/d', "$year/$month/$day")->toCarbon()->toDateString();
-
-        // Return the Gregorian date to the frontend
-        return response()->json([
-            'gregorian_date' => $gregorianDate,
-        ]);
-    }
-}*/
-                    
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
@@ -132,10 +86,10 @@
                 <div class="col-md-2">
                     <label for="maritalStatus">وضعیت تاهل </label>
                     <select name="maritalStatus" class="form-control">
-                        <option value="0">مجرد</option>
-                        <option value="1">متاهل</option>
-                        <option value="2">نامزد</option>
-                        <option value="3">مطلقه</option>
+                        <option value=0>مجرد</option>
+                        <option value=1>متاهل</option>
+                        <option value=2>نامزد</option>
+                        <option value=3>مطلقه</option>
                     </select>
                     <div class="invalid-feedback" id="error-maritalStatus"></div>
                 </div>

@@ -34,6 +34,7 @@
                                 }
                                 });
                             })
+
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
@@ -85,10 +86,10 @@
                 <div class="col-md-2">
                     <label for="maritalStatus">وضعیت تاهل </label>
                     <select name="maritalStatus" class="form-control">
-                        <option value="0">مجرد</option>
-                        <option value="1">متاهل</option>
-                        <option value="2">نامزد</option>
-                        <option value="3">مطلقه</option>
+                        <option value=0>مجرد</option>
+                        <option value=1>متاهل</option>
+                        <option value=2>نامزد</option>
+                        <option value=3>مطلقه</option>
                     </select>
                     <div class="invalid-feedback" id="error-maritalStatus"></div>
                 </div>

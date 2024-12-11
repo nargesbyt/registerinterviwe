@@ -42,7 +42,7 @@ class Application
         $this->router = new Router();
         $this->setupRoutes();
 
-        //R::setup('mysql:host=127.0.0.1;port=3306;dbname=company_test','company', 'company_secret');
+        R::setup('mysql:host=localhost;port=3306;dbname=company_test','company', 'company_secret');
     }
     private function setupRoutes()
     {

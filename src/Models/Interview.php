@@ -5,7 +5,7 @@ use DateTime;
 use PDO;
 use PDOException;
 
-//use RedBeanPHP\R;
+use RedBeanPHP\R;
 
 class Interview
 { 
@@ -15,11 +15,21 @@ class Interview
         $this->pdo = Application::$app->pdo;
     }
 
-    public static function save(array $data=[]):bool
+    public static function save(array $data=[])
     {   
-        //$interview =R::dispense('interview');
-       // R::store($interview);
-        $pdo = Application::$app->pdo;
+        $interviews =R::dispense('interviews');
+        $interviews->firstname = $data['firstname'];
+        $interviews->lastname = $data['lastname'];
+        $interviews->interviewDate = $data['interviewDate'];
+        $interviews->careerFieldId = $data['careerFieldId'];
+        $interviews->interviewTime = $data['interviewTime'];
+        $interviews->education = $data['education'];
+        $interviews->age = $data['age'];
+        $interviews->address = $data['address'];
+
+        $interviews->maritalStatus = $data['maritalStatus'];
+        R::store($interviews);
+        /*$pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
         (firstname,lastname,education,address,maritalStatus,phoneNum,
         interviewDate,careerFieldId) values 
@@ -40,7 +50,7 @@ class Interview
         $result = $statement->execute();
         //$result = $statement->execute($data);
        // var_dump($data);die;
-        return $result;
+        return $result;*/
         
     }
 
@@ -68,10 +78,9 @@ class Interview
     }
     public static function list(): ?array{
         $pdo = Application::$app->pdo;
-        $statement = $pdo->query('Select * From `interviews`');
-        //var_dump($statement->fetchAll(PDO::FETCH_ASSOC));die;
+        $statement = $pdo->query('Select * From `interviews` Limit 5');
         return $statement->fetchAll(PDO::FETCH_ASSOC);
-        //return R::findAll('interview');
+        //return R::findAll('interviews');
     }
 
     public static function update(array $params):bool{

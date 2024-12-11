@@ -5,12 +5,12 @@ $(document).ready(function() {
         $(".invalid-feedback").text("").hide();
         $(".form-control").removeClass("is-invalid");
         let persianDateInput = $("#interviewDate").val();  
-
+        console.log('persianDate is: ',persianDateInput);
 
         if (persianDateInput !== "") {
             try {
                 let persianDateObject = new persianDate(persianDateInput);
-
+                console.log('persianDate is created ',persianDateObject);
                 if (!persianDateObject.isValid()) {
                     console.error("فرمت تاریخ شمسی اشتباه است.");
                     isValid = false;
