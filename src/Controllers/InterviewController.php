@@ -11,7 +11,7 @@ use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-
+use Rakit\Validation\ErrorBag;
 
 class InterviewController extends BaseController
 {
@@ -35,7 +35,8 @@ class InterviewController extends BaseController
         if ($request->getMethod() == 'GET') {
             $careerFields = CareerField::list();
             //var_dump($careerFields);die;
-            $response->getBody()->write($this->render('interviews.create',['careerFields'=>$careerFields]));
+            $errors = session()->flash('errors')?? new ErrorBag();
+            $response->getBody()->write($this->render('interviews.create',['careerFields'=>$careerFields , 'errors'=>$errors]));
             return $response;
         }
         $params = (array)$request->getParsedBody();
@@ -50,6 +51,7 @@ class InterviewController extends BaseController
         ]);
 
         if ($validation->fails()) {
+            session()->flash('errors',$validation->errors());
             $errors = $validation->errors()->all();
             $response->getBody()->write($this->render('interviews.create', ['errors' => $errors]));
             return $response;

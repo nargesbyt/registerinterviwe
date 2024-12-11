@@ -15,9 +15,9 @@
 </head>
 
 <body dir=rtl>
-    @foreach($errors as $error)
-    <p>{{ $error }}</p>
-    @endforeach
+    <?php $__currentLoopData = $errors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <p><?php echo e($error); ?></p>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     <div class="container mt-5">
         <h2>فرم مصاحبه جدید</h2>
         <form id="create_interview" action="/interview/create" method="post" novalidate>
@@ -47,9 +47,9 @@
                     <label for="careerFieldId">سمت </label>
                     <select class="form-control" name="careerFieldId">
                         <option value="" disabled selected>سمت را انتخاب کنید</option>
-                        @foreach ($careerFields as $field)
-                        <option value="{{ $field['id'] }}">{{ $field['field'] }}</option>
-                        @endforeach
+                        <?php $__currentLoopData = $careerFields; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $field): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($field['id']); ?>"><?php echo e($field['field']); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                     <div class="invalid-feedback" id="error-careerFieldId"></div>
                 </div>
@@ -219,4 +219,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH /home/narges/registerinterviwe/resources/views/interviews/create.blade.php ENDPATH**/ ?>
