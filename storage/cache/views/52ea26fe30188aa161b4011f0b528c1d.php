@@ -123,6 +123,26 @@
                                         <p><strong>درون گرا یا برون گرا :</strong> <?php echo e($interview['characterType']); ?></p>
                                     </div>
                                 </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <p><strong>پوشش :</strong> <?php echo e($interview['coverType']); ?></p>
+                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p><strong>از کجا ما را پیدا کرده :</strong> <?php echo e($interview['employmentAdv']); ?></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p><strong>سطح زبان انگلیسی :</strong> <?php echo e($interview['englishLevel']); ?></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p><strong>قصد مهاجرت :</strong> <?php echo e($interview['migrateIntention']); ?></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                    <p><strong>نتیجه نهایی مصاحبه و امتیاز :</strong> <?php echo e($interview['interviewResult']); ?></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- Edit and Delete Buttons -->
