@@ -42,11 +42,13 @@ class Application
         $this->router = new Router();
         $this->setupRoutes();
 
+
         R::setup('mysql:host=localhost;port=3306;dbname=company_test','company', 'company_secret');
+
     }
     private function setupRoutes()
-    {
-        $this->router->map('GET', '/interview', [InterviewController::class, 'index']);
+    {   //this route handle path like /interview?page=2
+        $this->router->map('GET', '/interview', [InterviewController::class, 'index']); 
 
         $this->router->map('GET', '/interview/{id:\d+}', [InterviewController::class, 'get']);
 
@@ -70,7 +72,7 @@ class Application
     }
 
     public function dispatch(): ResponseInterface
-    {
+    {   
         return $this->router->dispatch($this->request);
     }
 }

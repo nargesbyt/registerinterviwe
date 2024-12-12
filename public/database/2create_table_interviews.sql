@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `interviews` (
     id int NOT NULL auto_increment,
     firstname varchar(255),
+<<<<<<< HEAD
     lastname varchar(255)
     interview_date date,
     education varchar(255),
@@ -21,5 +22,35 @@ CREATE TABLE IF NOT EXISTS `interviews` (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (career_field_id) REFERENCES careerfields(id),
     FOREIGN KEY (employment_history_id) REFERENCES employmenthistory(id)
+=======
+    lastname varchar(255),
+    interviewDate date,
+    careerFieldId int,
+    education varchar(255),
+    age int,
+    address varchar(255),
+    maritalStatus int,
+    childNum int,
+    phoneNum varchar(255),
+    employmentHistory text,
+    fatherJob varchar(255),
+    reasonForJob varchar(255),
+    interviewResult text,
+    internship int,
+    freetime varchar(255),
+    englishLevel int,
+    employmentAdv int,
+    computerSkill int,
+    knowAboutUs boolean,
+    haveFriendHere boolean,
+    wayToCome varchar(255),
+    lastReadBook varchar(255),
+    characterType int,
+    coverType varchar(255),
+    migrateIntention boolean,
+    resumeFile varchar(255),
+    PRIMARY KEY  (`id`),
+    FOREIGN KEY (careerFieldId) REFERENCES careerFields(id)
+>>>>>>> 6043ba5f9d580bba6b268b070c7a75a04ed65d06
     );
     

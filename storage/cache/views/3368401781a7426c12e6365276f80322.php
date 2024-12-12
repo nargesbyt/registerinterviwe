@@ -25,19 +25,6 @@
                 <div class="col-md-2">
                     <script type="text/javascript">
                         $(document).ready(function() {
-<<<<<<< HEAD
-                            $(".example1").pDatepicker({
-                                format: 'YYYY/MM/DD', 
-                                initialValue: true,   
-                                altFormat: 'YYYY-MM-DD',  // فرمت تاریخ برای ذخیره‌سازی یا استفاده در پایگاه داده
-                                onSelect: function() {
-                                    let selectedDate = $("#interviewDate").val();
-                                    console.log("تاریخ انتخابی: ", selectedDate);
-                                }
-                                });
-                            })
-
-=======
                             $(".persiandate").pDatepicker({
                                 format: 'YYYY/MM/DD',
                                 initialValue: true,
@@ -45,7 +32,6 @@
                                 persianDigit: false
                             });
                         })
->>>>>>> 6043ba5f9d580bba6b268b070c7a75a04ed65d06
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
@@ -97,10 +83,10 @@
                 <div class="col-md-2">
                     <label for="maritalStatus">وضعیت تاهل </label>
                     <select name="maritalStatus" class="form-control">
-                        <option value=0>مجرد</option>
-                        <option value=1>متاهل</option>
-                        <option value=2>نامزد</option>
-                        <option value=3>مطلقه</option>
+                        <option value="0">مجرد</option>
+                        <option value="1">متاهل</option>
+                        <option value="2">نامزد</option>
+                        <option value="3">مطلقه</option>
                     </select>
                     <div class="invalid-feedback" id="error-maritalStatus"></div>
                 </div>
@@ -233,4 +219,4 @@
 
 </body>
 
-</html><?php /**PATH C:\Users\zoomila\registerinterviwe\resources\views/interviews/create.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /home/narges/registerinterviwe/resources/views/interviews/create.blade.php ENDPATH**/ ?>

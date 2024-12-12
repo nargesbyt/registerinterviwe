@@ -1,44 +1,44 @@
-$(document).ready(function() {
-    $("#create_interview").submit(function(event) {
+$(document).ready(function () {
+    
+    $("#create_interview").submit(function (event) {
         let isValid = true;
 
         $(".invalid-feedback").text("").hide();
         $(".form-control").removeClass("is-invalid");
-        let persianDateInput = $("#interviewDate").val();  
-        console.log('persianDate is: ',persianDateInput);
 
+        let persianDateInput = $("#interviewDate").val();
         if (persianDateInput !== "") {
             try {
-                let persianDateObject = new persianDate(persianDateInput);
-                console.log('persianDate is created ',persianDateObject);
-                if (!persianDateObject.isValid()) {
-                    console.error("فرمت تاریخ شمسی اشتباه است.");
+                let dateParts = persianDateInput.split('/');
+                if (dateParts.length === 3) {
+                    let year = parseInt(dateParts[0]);
+                    let month = parseInt(dateParts[1]);
+                    let day = parseInt(dateParts[2]);
+
+                    // Create the Persian date object using an array
+                     //new persianDate([year, month - 1, day]).toCalendar('gregorian').year();
+                    // let gregorianDate = persianDateObject.toCalendar('gregorian');
+                    console.log("gregorianDate is :",new persianDate([year, month - 1, day]).toCalendar('gregorian').format('MMMM'))
+
+                } else {
+                    console.error("Incorrect Date Format.");
                     isValid = false;
                     alert("فرمت تاریخ وارد شده اشتباه است.");
                     return;
                 }
-                let gregorianDate = persianDateObject.toGregorian();
-                console.log("تاریخ میلادی: ", gregorianDate);
-                let mysqlFormattedDate = `${gregorianDate.year}-${String(gregorianDate.month).padStart(2, '0')}-${String(gregorianDate.day).padStart(2, '0')}`;
-    
-                    // قرار دادن تاریخ میلادی در فیلد ورودی
-                $("#interviewDate").val(mysqlFormattedDate);  
-    
-                } catch (error) {
-                    console.error("خطا در پردازش تاریخ شمسی:", error);
-                    isValid = false;
-                    alert("تاریخ وارد شده معتبر نیست.");
-                }
-            } else {
-                // اگر فیلد تاریخ خالی باشد
-                $("#error-interviewDate").text("پر کردن فیلد تاریخ مصاحبه الزامی است.").show();
-                $("#interviewDate").addClass("is-invalid");
+            } catch (error) {
+                console.error("Error processing Persian date:", error);
                 isValid = false;
+                alert("تاریخ وارد شده معتبر نیست.");
             }
 
-        console.log("Parsed Date Parts:", dateParts);
-        console.log("Parsed Time:", timeMatches);
-        console.log("Converted MySQL Date:", mysqlFormattedDate);
+        } else {
+            // If the date field is empty
+            $("#error-interviewDate").text("پر کردن فیلد تاریخ مصاحبه الزامی است.").show();
+            $("#interviewDate").addClass("is-invalid");
+            isValid = false;
+        }
+
 
         // Validate interviewTime
         if ($("#interviewTime").val() === "") {
@@ -74,3 +74,13 @@ $(document).ready(function() {
         }
     });
 });
+function convertToWesternNumerals(persianDate) {
+    const persianNumerals = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const westernNumerals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    let convertedDate = persianDate;
+    for (let i = 0; i < 10; i++) {
+        convertedDate = convertedDate.replace(new RegExp(persianNumerals[i], 'g'), westernNumerals[i]);
+    }
+    return convertedDate;
+}

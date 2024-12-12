@@ -24,3 +24,13 @@ if (!function_exists('old')) {
         return $inputs[$key] ?? "";
     }
 }
+
+function persianToGregorian($persianDate) {
+    // Split the Persian date (assuming it's in the format: YYYY/MM/DD)
+    list($year, $month, $day) = explode('/', $persianDate);
+    
+    // Convert Persian date to Gregorian date
+    $gregorianDate = Jalalian::fromFormat('Y/m/d', "$year/$month/$day")->toCarbon()->toDateString();
+    
+    return $gregorianDate;
+}

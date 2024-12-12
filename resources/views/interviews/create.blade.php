@@ -4,9 +4,10 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/css/persian-datepicker.css" />
-    <link rel="stylesheet" href="./../../Css/style.css"/>
+    <link rel="stylesheet" href="./../../Css/style.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+    <script src="js/persian-date.min.js"></script>
+    
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-date/dist/persian-date.js"></script>
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script>
 
@@ -24,22 +25,19 @@
                 <div class="col-md-2">
                     <script type="text/javascript">
                         $(document).ready(function() {
-                            $(".example1").pDatepicker({
-                                format: 'YYYY/MM/DD', 
-                                initialValue: true,   
-                                altFormat: 'YYYY-MM-DD',  // فرمت تاریخ برای ذخیره‌سازی یا استفاده در پایگاه داده
-                                onSelect: function() {
-                                    let selectedDate = $("#interviewDate").val();
-                                    console.log("تاریخ انتخابی: ", selectedDate);
-                                }
-                                });
-                            })
+                            $(".persiandate").pDatepicker({
+                                format: 'YYYY/MM/DD',
+                                initialValue: true,
+                                altFormat: 'YYYY-MM-DD',
+                                persianDigit: false
+                            });
+                        })
 
                     </script>
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
-                    <input type="text" class="example1 form-control" name="interviewDate" id="interviewDate" />
-                    <div class="invalid-feedback" id="error-interviewDate"></div> 
+                    <input type="text" class="persiandate form-control" name="interviewDate" id="interviewDate" />
+                    <div class="invalid-feedback" id="error-interviewDate"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="interviewTime">ساعت شروع مصاحبه</label>
@@ -101,10 +99,10 @@
                 <div class="col-md-2">
                     <label for="computerLiteracy">کاربری کامپیوتر</label>
                     <select name="computerLiteracy" class="form-control">
-                        <option value="none">صفر</option>
-                        <option value="little">کم</option>
-                        <option value="intermediate">متوسط</option>
-                        <option value="expert">حرفه ای</option>
+                        <option value=0>صفر</option>
+                        <option value=1>کم</option>
+                        <option value=2>متوسط</option>
+                        <option value=3>حرفه ای</option>
                     </select>
                     <div class="invalid-feedback" id="error-computerLiteracy"></div>
                 </div>
@@ -149,15 +147,15 @@
                 <div class="col-md-4">
                     <label for="knowAboutUs">اسم زومیلا را قبلا شنیده</label>
                     <select name="knowAboutUs" class="form-control">
-                        <option value="1">بله</option>
-                        <option value="0">خیر</option>
+                        <option value=1>بله</option>
+                        <option value=0>خیر</option>
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label for="haveFriendHere">دوستی داشته که در زومیلا کار کنه</label>
                     <select name="haveFriendHere" class="form-control">
-                        <option value="1">بله</option>
-                        <option value="0">خیر</option>
+                        <option value=1>بله</option>
+                        <option value=0>خیر</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -178,8 +176,8 @@
                 <div class="col-md-4">
                     <label for="characterType">درون گرا یا برون گرا</label>
                     <select name="characterType" class="form-control">
-                        <option value="1">درون گرا</option>
-                        <option value="0">برون گرا</option>
+                        <option value=1>درون گرا</option>
+                        <option value=0>برون گرا</option>
                     </select>
                 </div>
 
@@ -196,10 +194,10 @@
                 <div class="col-md-3">
                     <label for="englishLevel">سطح زبان انگلیسی</label>
                     <select name="englishLevel" class="form-control">
-                        <option value="0">صفر</option>
-                        <option value="1">کم</option>
-                        <option value="2">متوسط</option>
-                        <option value="3">حرفه ای</option>
+                        <option value=0>صفر</option>
+                        <option value=1>کم</option>
+                        <option value=2>متوسط</option>
+                        <option value=3>حرفه ای</option>
                     </select>
                 </div>
                 <div class="col-md-3">
