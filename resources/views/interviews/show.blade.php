@@ -35,6 +35,32 @@
                                 <p><strong>تحصیلات :</strong>{{ $interview['education'] }}</p>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p><strong>سن :</strong>{{ $interview['age'] }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><strong>آدرس :</strong>{{ $interview['address'] }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><strong>تاهل :</strong>{{ $interview['maritalStatus'] }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><strong>تعداد فرزندان :</strong>{{ $interview['childNum'] }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><strong>کاربری کامپیوتر</strong>{{ $interview['computerSkill'] }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><strong>شماره موبایل :</strong>{{ $interview['phoneNum'] }}</p>
+                            </div>
+
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <p><strong>سابقه کاری :</strong>{{ $interview['employmentHistory'] }}</p>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
