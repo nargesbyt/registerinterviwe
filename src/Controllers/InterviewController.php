@@ -59,12 +59,35 @@ class InterviewController extends BaseController
             return $response;
         }
         $params = (array)$request->getParsedBody();
-        //var_dump($params['interviewDate']);die;
+        //var_dump($params);die;
+
+        // Sanitize input parameters before validation and saving
+        $params = $this->sanitize($params);
+
+        // Validate and sanitize interview date and time (they should already be validated in the frontend)
+        // Retrieve the Gregorian Date from the hidden field
+        $gregorianDate = $params['gregorianDatetime'] ?? null;
+
+        // Remove unnecessary fields from $params before saving to the database
+        unset($params['interviewDate']); // Remove Persian interviewDate
+        unset($params['interviewTime']); // Remove interviewTime
+
+        if (!$gregorianDate) {
+            // If no gregorianDate was set, return an error response
+            $response->getBody()->write('Gregorian date is missing');
+            return $response->withStatus(400, 'Bad Request');
+        }
+
+        // Add the Gregorian date to the params for saving
+        $params['interviewDate'] = $gregorianDate; // This will be stored in the database
+    
+        //var_dump($params);die;
+        
         $validation = $this->validate($params, [
             'firstname' => 'required',
             'lastname' => 'required',
             'interviewDate' => 'required',
-            'interviewTime'=>'required',
+            //'interviewTime'=>'required',
             'careerFieldId'=>'required',
 
         ]);
@@ -84,7 +107,49 @@ class InterviewController extends BaseController
         return $response->withStatus(500,'server error');
     
     }
-    
+
+    // Sanitize the input parameters
+    private function sanitize(array $params): array
+    {
+        foreach ($params as $key => $value) {
+            // Sanitize strings by trimming and removing unwanted characters
+            if (is_string($value)) {
+                $params[$key] = htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+            }
+
+            // Optionally, you can sanitize dates if they are in a specific format (e.g., YYYY/MM/DD)
+            if ($key === 'interviewDate') {
+                // If you need to ensure the date is valid, you can perform a check here as well
+                $params[$key] = $this->sanitizeDate($value);
+            }
+
+            // Optionally, you can sanitize numeric values (for example, careerFieldId) if required
+            if (in_array($key, ['careerFieldId'], true)) {
+                $params[$key] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+            }
+        }
+        return $params;
+    }
+
+    // Optional: If you need a specific date format validation and sanitation
+    private function sanitizeDate($date)
+    {
+        // Ensure the date is in a valid format (e.g., YYYY/MM/DD) before storing
+        $date = trim($date);
+        $dateParts = explode('/', $date);
+        if (count($dateParts) === 3) {
+            $year = (int)$dateParts[0];
+            $month = (int)$dateParts[1];
+            $day = (int)$dateParts[2];
+
+            // You can add more checks here for valid Persian dates
+            if ($year >= 1300 && $month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
+                return $date; // Return valid date
+            }
+        }
+        return null; // Return null if date is not valid
+    }
+        
     public function edit(ServerRequestInterface $request): ResponseInterface
     {
         $response = new Response();

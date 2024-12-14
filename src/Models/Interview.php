@@ -17,15 +17,16 @@ class Interview extends \RedBeanPHP\SimpleModel
         $this->pdo = Application::$app->pdo;
     }
 
-    public static function save(array $data = []): bool
-    {
-        /*$interview =R::dispense('interview');
+    /*$interview =R::dispense('interview');
         $interview->firstname = $data['firstname'];
         $interview->lastname = $data['lastname'];
         $interview->careerFieldId = $data['careerFieldId'];
         /*$interview->firstname = $data['firstname'];
         $interview->firstname = $data['firstname'];
         R::store($interview);*/
+    public static function save(array $data = []): bool
+    {
+        
         $pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
         (firstname,lastname,education,address,maritalStatus,phoneNum,
@@ -62,6 +63,13 @@ class Interview extends \RedBeanPHP\SimpleModel
         $statement->bindParam('knowAboutUs', $data['knowAboutUs']);
         $statement->bindParam('haveFriendHere', $data['haveFriendHere']);
 
+
+        $statement->bindParam('wayToCome', $data['wayToCome']);
+        $statement->bindParam('lastReadBook', $data['lastReadBook']);
+        $statement->bindParam('characterType', $data['characterType']);
+        $statement->bindParam('coverType', $data['coverType']);
+        $statement->bindParam('migrateIntention', $data['migrateIntention']);
+
         $result = $statement->execute();
 
         return $result;
@@ -92,9 +100,9 @@ class Interview extends \RedBeanPHP\SimpleModel
         $offset = max(0,($page - 1) * $recordsPerPage);
 
         // Prepare the query with LIMIT and OFFSET for pagination
-        $statement = $pdo->prepare( "SELECT interviews.*, careerfields.field 
+        $statement = $pdo->prepare( "SELECT interviews.*, careerFields.field 
         FROM interviews 
-        LEFT JOIN careerfields ON interviews.careerFieldId = careerfields.id 
+        LEFT JOIN careerFields ON interviews.careerFieldId = careerFields.id 
         LIMIT :limit OFFSET :offset");
         $statement->bindValue(':limit', $recordsPerPage, PDO::PARAM_INT);
         $statement->bindValue(':offset', $offset, PDO::PARAM_INT);

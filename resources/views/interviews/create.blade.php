@@ -4,12 +4,11 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/css/persian-datepicker.css" />
-    <link rel="stylesheet" href="./../../Css/style.css" />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="js/persian-date.min.js"></script>
     
-    <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-date/dist/persian-date.js"></script>
-    <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-date/dist/persian-date.js"></script> <!-- Persian Date JS -->
+    <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script><!-- Persian Date Picker JS -->
+    <link rel="stylesheet" href="./../../Css/style.css" />
 
     <title>افزودن فرم مصاحبه</title>
 </head>
@@ -27,7 +26,7 @@
                         $(document).ready(function() {
                             $(".persiandate").pDatepicker({
                                 format: 'YYYY/MM/DD',
-                                initialValue: true,
+                                initialValue: false,
                                 altFormat: 'YYYY-MM-DD',
                                 persianDigit: false
                             });
@@ -37,16 +36,32 @@
 
                     <label for="interviewDate">تاریخ مصاحبه</label>
                     <input type="text" class="persiandate form-control" name="interviewDate" id="interviewDate" />
+                    
                     <div class="invalid-feedback" id="error-interviewDate"></div>
                 </div>
+                
                 <div class="col-md-2">
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $(".persianTime").pDatepicker({
+                                onlyTimePicker: true,
+                                initialValue: false,
+                                persianDigit: false,
+                                format: 'HH:mm:ss'
+                            })
+                        })
+
+                    </script>
                     <label for="interviewTime">ساعت شروع مصاحبه</label>
-                    <input type="text" class="form-control" name="interviewTime" id="interviewTime">
+                    <input type="text" class="persianTime form-control" name="interviewTime" id="interviewTime">
                     <div class="invalid-feedback" id="error-interviewTime"></div>
                 </div>
+
+                <input type="hidden" id="gregorianDatetime" name="gregorianDatetime" />
+
                 <div class="col-md-2">
                     <label for="careerFieldId">سمت </label>
-                    <select class="form-control" name="careerFieldId">
+                    <select class="form-control" name="careerFieldId" id="careerFieldId">
                         <option value="" disabled selected>سمت را انتخاب کنید</option>
                         @foreach ($careerFields as $field)
                         <option value="{{ $field['id'] }}">{{ $field['field'] }}</option>
