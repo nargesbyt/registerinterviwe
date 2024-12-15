@@ -35,12 +35,12 @@
                                 <div class="row">
                                     <!-- Date of Interview -->
                                     <div class="col-md-2">
-                                        <p><strong>تاریخ مصاحبه:</strong> {{ $interview['inteviewDate'] }}</p>
+                                        <p><strong>تاریخ مصاحبه:</strong> {{ $interview['interviewDate'] }}</p>
                                     </div>
-                                    <!-- Start Time -->
+                                    <!-- Start Time 
                                     <div class="col-md-2">
-                                        <p><strong>ساعت شروع مصاحبه:</strong> {{ $interview['inteviewTime'] }}</p>
-                                    </div>
+                                        <p><strong>ساعت شروع مصاحبه:</strong> {{ $interview['interviewTime'] }}</p>
+                                    </div> -->
                                     <!-- Job Position -->
                                     <div class="col-md-2">
                                         <p><strong>سمت:</strong> {{ $interview['field'] }}</p>

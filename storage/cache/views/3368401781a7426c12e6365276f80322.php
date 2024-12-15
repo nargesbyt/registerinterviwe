@@ -98,7 +98,8 @@
                 </div>
                 <div class="col-md-2">
                     <label for="maritalStatus">وضعیت تاهل </label>
-                    <select name="maritalStatus" class="form-control">
+                    <select name="maritalStatus" class="form-control" id="maritalStatus">
+                        <option value="" disabled selected>وضعیت تاهل</option>
                         <option value=0>مجرد</option>
                         <option value=1>متاهل</option>
                         <option value=2>نامزد</option>
@@ -113,7 +114,8 @@
                 </div>
                 <div class="col-md-2">
                     <label for="computerLiteracy">کاربری کامپیوتر</label>
-                    <select name="computerLiteracy" class="form-control">
+                    <select name="computerLiteracy" id="computerLiteracy" class="form-control">
+                    <option value="" disabled selected>کاربری کامپیوتر</option>
                         <option value=0>صفر</option>
                         <option value=1>کم</option>
                         <option value=2>متوسط</option>
@@ -150,7 +152,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="internship">کارآموزی</label>
-                    <select name="internship" class="form-control">
+                    <select name="internship" id="internship" class="form-control">
+                        <option value="" disabled selected>کارآموزی</option>
                         <option value="1">بله</option>
                         <option value="0">خیر</option>
                     </select>
@@ -161,14 +164,16 @@
             <div class="row mt-3">
                 <div class="col-md-4">
                     <label for="knowAboutUs">اسم زومیلا را قبلا شنیده</label>
-                    <select name="knowAboutUs" class="form-control">
+                    <select name="knowAboutUs" id="knowAboutUs" class="form-control">
+                        <option value="" disabled selected>انتخاب کنید</option>
                         <option value=1>بله</option>
                         <option value=0>خیر</option>
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label for="haveFriendHere">دوستی داشته که در زومیلا کار کنه</label>
-                    <select name="haveFriendHere" class="form-control">
+                    <select name="haveFriendHere" id="haveFriendHere" class="form-control">
+                    <option value="" disabled selected>انتخاب کنید</option>
                         <option value=1>بله</option>
                         <option value=0>خیر</option>
                     </select>
@@ -190,7 +195,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="characterType">درون گرا یا برون گرا</label>
-                    <select name="characterType" class="form-control">
+                    <select name="characterType" id="characterType" class="form-control">
+                        <option value="" disabled selected> انتخاب کنید</option>
                         <option value=1>درون گرا</option>
                         <option value=0>برون گرا</option>
                     </select>
@@ -209,6 +215,7 @@
                 <div class="col-md-3">
                     <label for="englishLevel">سطح زبان انگلیسی</label>
                     <select name="englishLevel" class="form-control">
+                    <option value="" disabled selected> انتخاب کنید</option>
                         <option value=0>صفر</option>
                         <option value=1>کم</option>
                         <option value=2>متوسط</option>
@@ -217,7 +224,11 @@
                 </div>
                 <div class="col-md-3">
                     <label for="migrateIntention">قصد مهاجرت</label>
-                    <input type="text" class="form-control" name="migrateIntention" id="migrateIntention">
+                    <select name="migrateIntention" id="migrateIntention" class="form-control">
+                    <option value="" disabled selected> انتخاب کنید</option>
+                        <option value=1>بله</option>
+                        <option value=0>خیر</option>
+                    </select>
                 </div>
 
             </div>

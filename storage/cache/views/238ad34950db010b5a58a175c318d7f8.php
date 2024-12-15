@@ -35,12 +35,12 @@
                                 <div class="row">
                                     <!-- Date of Interview -->
                                     <div class="col-md-2">
-                                        <p><strong>تاریخ مصاحبه:</strong> <?php echo e($interview['inteviewDate']); ?></p>
+                                        <p><strong>تاریخ مصاحبه:</strong> <?php echo e($interview['interviewDate']); ?></p>
                                     </div>
-                                    <!-- Start Time -->
+                                    <!-- Start Time 
                                     <div class="col-md-2">
-                                        <p><strong>ساعت شروع مصاحبه:</strong> <?php echo e($interview['inteviewTime']); ?></p>
-                                    </div>
+                                        <p><strong>ساعت شروع مصاحبه:</strong> <?php echo e($interview['interviewTime']); ?></p>
+                                    </div> -->
                                     <!-- Job Position -->
                                     <div class="col-md-2">
                                         <p><strong>سمت:</strong> <?php echo e($interview['field']); ?></p>

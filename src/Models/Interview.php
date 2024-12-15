@@ -26,7 +26,7 @@ class Interview extends \RedBeanPHP\SimpleModel
         R::store($interview);*/
     public static function save(array $data = []): bool
     {
-        
+
         $pdo = Application::$app->pdo;
         $statement = $pdo->prepare('Insert into `interviews` 
         (firstname,lastname,education,address,maritalStatus,phoneNum,
@@ -55,7 +55,7 @@ class Interview extends \RedBeanPHP\SimpleModel
         $statement->bindParam('fatherJob', $data['fatherJob']);
         $statement->bindParam('reasonForJob', $data['reasonForJob']);
         $statement->bindParam('interviewResult', $data['interviewResult']);
-        $statement->bindParam('internship', $data['internship']);
+        $statement->bindParam('internship',                                                                                                                                                                                                                                                                           $data['internship']);
         $statement->bindParam('freetime', $data['freetime']);
         $statement->bindParam('englishLevel', $data['englishLevel']);
         $statement->bindParam('employmentAdv', $data['employmentAdv']);
@@ -97,10 +97,10 @@ class Interview extends \RedBeanPHP\SimpleModel
     {
         $pdo = Application::$app->pdo;
         // Calculate the offset based on the current page and records per page
-        $offset = max(0,($page - 1) * $recordsPerPage);
+        $offset = max(0, ($page - 1) * $recordsPerPage);
 
         // Prepare the query with LIMIT and OFFSET for pagination
-        $statement = $pdo->prepare( "SELECT interviews.*, careerFields.field 
+        $statement = $pdo->prepare("SELECT interviews.*, careerFields.field 
         FROM interviews 
         LEFT JOIN careerFields ON interviews.careerFieldId = careerFields.id 
         LIMIT :limit OFFSET :offset");
@@ -113,17 +113,43 @@ class Interview extends \RedBeanPHP\SimpleModel
         // Loop through the interviews and transform the maritalStatus field
         foreach ($interviews as &$interview) {
             // Convert the integer value to a string for maritalStatus
-            $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus']);
-            $interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill']);
-            $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel']);
-            $interview['field'] = $interview['field'] ?? 'نامشخص';  // In case careerField is null
+            if (is_array($interview)) {
+                $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus']?? null);
+                $interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill']?? null);
+                $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel']?? null);
+                $interview['field'] = $interview['field'] ?? 'نامشخص';  // In case careerField is null
+                /*$interview['internship'] = self::getBoolLabel($interview['internship']?? null);
+                $interview['knowAboutUs'] = self::getBoolLabel($interview['knowAboutUs']?? null);
+                $interview['haveFriendHere'] = self::getBoolLabel($interview['haveFriendHere']?? null);
+                $interview['migrateIntention'] = self::getBoolLabel($interview['migrateIntention']?? null);
+                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType']?? null);*/
+            }
         }
-        
+
 
         return $interviews;
     }
-    public static function getMaritalStatusLabel(int $status): string
+    public static function getcharacterTypeLabel($characterType)
     {
+        $characterTypes = [
+            0 => 'برون گرا',
+            1 => 'درون گرا'
+        ];
+        return $characterTypes[$characterType] ?? 'نامشخص';
+    }
+
+    public static function getBoolLabel($status)
+    {
+        $status = $status ?? 0;
+        $status = [
+            0 => 'خیر',
+            1 => 'بله'
+        ];
+        return $status[$status] ?? 'نامشخص';
+    }
+    public static function getMaritalStatusLabel($status): string
+    {
+        $status = $status ?? 0;
         $statuses = [
             0 => 'مجرد',
             1 => 'متاهل',
@@ -136,9 +162,10 @@ class Interview extends \RedBeanPHP\SimpleModel
     }
     public static function getEnglishLevelLabel($level): string
     {
+        $level = $level ?? 0;
         $levels = [
             0 => 'صفر',
-            1 => 'کم' ,
+            1 => 'کم',
             2 => 'متوسط',
             3 => 'حرفه ای'
         ];
@@ -148,9 +175,10 @@ class Interview extends \RedBeanPHP\SimpleModel
     }
     public static function getComputerSkillLabel($computerLevel): string
     {
+        $computerLevel = $computerLevel ?? 0;
         $computerLevels = [
             0 => 'صفر',
-            1 => 'کم' ,
+            1 => 'کم',
             2 => 'متوسط',
             3 => 'حرفه ای'
         ];

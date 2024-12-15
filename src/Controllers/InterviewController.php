@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use App\Models\CareerField;
 use App\Models\Interview;
+use Carbon\Carbon;
 use Jenssegers\Blade\Blade;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\ServerRequest;
+use Morilog\Jalali\Jalalian;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rakit\Validation\ErrorBag;
@@ -25,6 +27,18 @@ class InterviewController extends BaseController
 
         // Fetch the interviews for the current page
         $interviews = Interview::list($page, $recordsPerPage);
+        foreach ($interviews as $interview) {
+            if (isset($interview['interviewDate'])) {
+                // Convert the Gregorian interview date to Persian
+                $gregorianDate = new \DateTime($interview['interviewDate']);
+                $carbonDate = Carbon::instance($gregorianDate); // Convert DateTime to Carbon instance
+
+                // Convert to Jalali (Persian) date
+                $persianDate = Jalalian::fromCarbon($carbonDate);
+                
+                $interview['interviewDate'] = $persianDate->format('Y/m/d'); // You can customize the format
+            }
+        }
 
         // Get the total number of interviews
         $totalCount = Interview::getTotalCount();
@@ -59,6 +73,17 @@ class InterviewController extends BaseController
             return $response;
         }
         $params = (array)$request->getParsedBody();
+        $age = isset($params['age']) && is_numeric($params['age']) ? (int) $params['age'] : null;
+        $maritalStatus = isset($params['maritalStatus']) && is_numeric($params['maritalStatus']) ? (int) $params['maritalStatus'] : null;
+        $childNum = isset($params['childNum']) && is_numeric($params['childNum']) ? (int) $params['childNum'] : null;
+        $internship = isset($params['internship']) && is_numeric($params['internship']) ? (int) $params['internship'] : null;
+        $englishLevel = isset($params['englishLevel']) && is_numeric($params['englishLevel']) ? (int) $params['englishLevel'] : null;
+        $computerSkill = isset($params['computerSkill']) && is_numeric($params['computerSkill']) ? (int) $params['computerSkill'] : null;
+        $knowAboutUs = isset($params['knowAboutUs']) && is_numeric($params['knowAboutUs']) ? (int) $params['knowAboutUs'] : null;
+        $haveFriendHere = isset($params['haveFriendHere']) && is_numeric($params['haveFriendHere']) ? (int) $params['haveFriendHere'] : null;
+        $characterType = isset($params['characterType']) && is_numeric($params['characterType']) ? (int) $params['characterType'] : null;
+        $migrateIntention = isset($params['migrateIntention']) && is_numeric($params['migrateIntention']) ? (int) $params['migrateIntention'] : null;
+        
         //var_dump($params);die;
 
         // Sanitize input parameters before validation and saving
@@ -78,8 +103,19 @@ class InterviewController extends BaseController
             return $response->withStatus(400, 'Bad Request');
         }
 
+        try {
+            // Validate and format the Gregorian date
+            $dateTime = new \DateTime($gregorianDate);  // This will throw an exception if invalid
+            $gregorianDate = $dateTime->format('Y-m-d H:i:s');  // Store it in a standardized format
+        } catch (\Exception $e) {
+            // If the Gregorian date format is invalid, return an error
+            $response->getBody()->write('Invalid Gregorian date format');
+            return $response->withStatus(400, 'Bad Request');
+        }
+
         // Add the Gregorian date to the params for saving
         $params['interviewDate'] = $gregorianDate; // This will be stored in the database
+        
     
         //var_dump($params);die;
         
@@ -87,7 +123,7 @@ class InterviewController extends BaseController
             'firstname' => 'required',
             'lastname' => 'required',
             'interviewDate' => 'required',
-            //'interviewTime'=>'required',
+            //'age' => 'min'
             'careerFieldId'=>'required',
 
         ]);
@@ -98,7 +134,7 @@ class InterviewController extends BaseController
             $response->getBody()->write($this->render('interviews.create', ['errors' => $errors]));
             return $response;
         }
-
+        //var_dump($params);die;
         $result = Interview::save($params);
         if($result){
              return new RedirectResponse('/interview');
