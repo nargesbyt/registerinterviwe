@@ -29,9 +29,9 @@
         <div class="row">
             @foreach ($interviews as $interview)
                 <div class="col-md-12 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm mx-0">
                         <div class="card-body">
-                        <div class="container mt-3">
+                        <div class="container mt-3 px-1">
                                 <div class="row">
                                     <!-- Date of Interview -->
                                     <div class="col-md-2">

@@ -73,19 +73,29 @@ class InterviewController extends BaseController
             return $response;
         }
         $params = (array)$request->getParsedBody();
+        $careerFieldId = isset($params['careerFieldId'])? (int) $params['careerFieldId'] : null;
         $age = isset($params['age']) && is_numeric($params['age']) ? (int) $params['age'] : null;
         $maritalStatus = isset($params['maritalStatus']) && is_numeric($params['maritalStatus']) ? (int) $params['maritalStatus'] : null;
         $childNum = isset($params['childNum']) && is_numeric($params['childNum']) ? (int) $params['childNum'] : null;
         $internship = isset($params['internship']) && is_numeric($params['internship']) ? (int) $params['internship'] : null;
         $englishLevel = isset($params['englishLevel']) && is_numeric($params['englishLevel']) ? (int) $params['englishLevel'] : null;
-        $computerSkill = isset($params['computerSkill']) && is_numeric($params['computerSkill']) ? (int) $params['computerSkill'] : null;
+        $computerSkill = isset($params['computerLiteracy']) && is_numeric($params['computerLiteracy']) ? (int) $params['computerLiteracy'] : null;
         $knowAboutUs = isset($params['knowAboutUs']) && is_numeric($params['knowAboutUs']) ? (int) $params['knowAboutUs'] : null;
         $haveFriendHere = isset($params['haveFriendHere']) && is_numeric($params['haveFriendHere']) ? (int) $params['haveFriendHere'] : null;
         $characterType = isset($params['characterType']) && is_numeric($params['characterType']) ? (int) $params['characterType'] : null;
         $migrateIntention = isset($params['migrateIntention']) && is_numeric($params['migrateIntention']) ? (int) $params['migrateIntention'] : null;
         
-        //var_dump($params);die;
-
+        $params['age'] = $age;
+        $params['maritalStatus'] = $maritalStatus;
+        $params['childNum'] = $childNum;
+        $params['internship'] = $internship;
+        $params['englishLevel'] = $englishLevel;
+        $params['computerSkill'] = $computerSkill;
+        $params['knowAboutUs'] = $knowAboutUs;
+        $params['haveFriendHere'] = $haveFriendHere;
+        $params['characterType'] = $characterType;
+        $params['migrateIntention'] = $migrateIntention;
+        $params['careerFieldId'] = $careerFieldId;
         // Sanitize input parameters before validation and saving
         $params = $this->sanitize($params);
 
@@ -96,7 +106,7 @@ class InterviewController extends BaseController
         // Remove unnecessary fields from $params before saving to the database
         unset($params['interviewDate']); // Remove Persian interviewDate
         unset($params['interviewTime']); // Remove interviewTime
-
+        
         if (!$gregorianDate) {
             // If no gregorianDate was set, return an error response
             $response->getBody()->write('Gregorian date is missing');
@@ -115,6 +125,7 @@ class InterviewController extends BaseController
 
         // Add the Gregorian date to the params for saving
         $params['interviewDate'] = $gregorianDate; // This will be stored in the database
+        
         
     
         //var_dump($params);die;
@@ -185,17 +196,46 @@ class InterviewController extends BaseController
         }
         return null; // Return null if date is not valid
     }
-        
-    public function edit(ServerRequestInterface $request): ResponseInterface
+    public function editForm(ServerRequestInterface $request): ResponseInterface
     {
-        $response = new Response();
-        $params = $request->getParsedBody();
-        
-        if(Interview::update($params)){
-            return new RedirectResponse('/interview');
+        $id = $request->getAttribute('id');
+        $interview = Interview::getById($id);
+
+        if ($interview === null) {
+            return new Response('Interview not found', 404);
         }
 
+        // Render a view with the interview data
+        return new HtmlResponse($this->render('interviews.edit', [
+            'interview' => $interview,
+        ]));
     }
+
+    public function update(ServerRequestInterface $request): ResponseInterface
+    {
+        $id = $request->getAttribute('id');
+        $params = $request->getParsedBody();
+
+        // Validate and sanitize the data
+        // (you can use more thorough validation as needed)
+        if (empty($params['firstname']) || empty($params['lastname'])) {
+            return new Response('Please fill all required fields.', 400);
+        }
+
+        // Perform the update
+        if (Interview::update($params,$id)) {
+            return new RedirectResponse('/interview');
+        } else {
+            return new Response('Failed to update interview.', 500);
+        }
+    }
+
+
+
+
+
+        
+    
     /*public function find(ServerRequestInterface $requst,$interviewDate):ResponseInterface
     {
 

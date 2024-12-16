@@ -29,9 +29,9 @@
         <div class="row">
             <?php $__currentLoopData = $interviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $interview): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-md-12 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm mx-0">
                         <div class="card-body">
-                        <div class="container mt-3">
+                        <div class="container mt-3 px-1">
                                 <div class="row">
                                     <!-- Date of Interview -->
                                     <div class="col-md-2">

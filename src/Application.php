@@ -54,7 +54,10 @@ class Application
 
         $this->router->map(['GET', 'POST'], '/interview/create', [InterviewController::class, 'create']);
 
-        //$this->router->map(['GET', 'POST'], '/interview/edit', [InterviewController::class, 'edit']);
+        $this->router->map('GET', '/interview/{id:\d+}/edit', [InterviewController::class, 'editForm']);
+
+        // Handle the update request (POST request)
+        $this->router->map('POST', '/interview/{id:\d+}/edit', [InterviewController::class, 'update']);
 
         /*$this->router->map('GET', '/', function ($request, $response) use ($this->blade) {
             return $blade->make('welcome')->render();

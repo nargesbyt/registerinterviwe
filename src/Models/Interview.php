@@ -39,6 +39,14 @@ class Interview extends \RedBeanPHP\SimpleModel
         :reasonForJob, :interviewResult, :internship, :freetime, :englishLevel, :employmentAdv,
         :computerSkill, :knowAboutUs, :haveFriendHere, :wayToCome, :lastReadBook, :characterType,
         :coverType, :migrateIntention)');
+
+        // Bind the parameters
+        /*foreach ($data as $key => $value) {
+            $statement->bindValue($key, $value);
+        }*/
+        //in case $data has got extra fields assign parameters one by one.
+
+
         $statement->bindParam('firstname', $data['firstname']);
         $statement->bindParam('lastname', $data['lastname']);
         $statement->bindParam('education', $data['education']);
@@ -49,7 +57,7 @@ class Interview extends \RedBeanPHP\SimpleModel
         //$statement->bindParam('gender',intval($data['gender']));
         $statement->bindParam('interviewDate', $data['interviewDate']);
         //$statement->bindParam('interviewTime',$data['interviewTime']);
-        $statement->bindParam('careerFieldId', intval($data['careerFieldId']));
+        $statement->bindParam('careerFieldId', $data['careerFieldId']);
         $statement->bindParam('childNum', $data['childNum']);
         $statement->bindParam('employmentHistory', $data['employmentHistory']);
         $statement->bindParam('fatherJob', $data['fatherJob']);
@@ -59,11 +67,9 @@ class Interview extends \RedBeanPHP\SimpleModel
         $statement->bindParam('freetime', $data['freetime']);
         $statement->bindParam('englishLevel', $data['englishLevel']);
         $statement->bindParam('employmentAdv', $data['employmentAdv']);
-        $statement->bindParam('computerSkill', $data['computerSkill']);
+        $statement->bindParam('computerSkill', $data['computerLiteracy']);
         $statement->bindParam('knowAboutUs', $data['knowAboutUs']);
         $statement->bindParam('haveFriendHere', $data['haveFriendHere']);
-
-
         $statement->bindParam('wayToCome', $data['wayToCome']);
         $statement->bindParam('lastReadBook', $data['lastReadBook']);
         $statement->bindParam('characterType', $data['characterType']);
@@ -196,17 +202,52 @@ class Interview extends \RedBeanPHP\SimpleModel
     }
 
 
-    public static function update(array $params): bool
+    public static function update(array $params,$id): bool
     {
-        $interview = self::getById($params['id']);
+        $interview = self::getById($id);
         if ($interview !== null) {
             $pdo = Application::$app->pdo;
-            $statement = $pdo->prepare('Update `interviews` set firstname=:firstname , lastname=:lastname where id=:id');
-            $statement->bindParam('id', $params['id']);
-            $statement->bindParam('firstname', $params['firstname']);
-            $statement->bindParam('lastname', $params['lastname']);
+
+            // Prepare the update query with all necessary fields
+            $statement = $pdo->prepare('
+                UPDATE `interviews` SET 
+                    firstname = :firstname,
+                    lastname = :lastname,
+                    careerFieldId = :careerFieldId,
+                    interviewDate = :interviewDate,
+                    age = :age,
+                    address = :address,
+                    maritalStatus = :maritalStatus,
+                    childNum = :childNum,
+                    computerSkill = :computerSkill,
+                    phoneNum = :phoneNum,
+                    employmentHistory = :employmentHistory,
+                    fatherJob = :fatherJob,
+                    reasonForJob = :reasonForJob,
+                    internship = :internship,
+                    knowAboutUs = :knowAboutUs,
+                    haveFriendHere = :haveFriendHere,
+                    wayToCome = :wayToCome,
+                    freetime = :freetime,
+                    lastReadBook = :lastReadBook,
+                    characterType = :characterType,
+                    coverType = :coverType,
+                    employmentAdv = :employmentAdv,
+                    englishLevel = :englishLevel,
+                    migrateIntention = :migrateIntention,
+                    interviewResult = :interviewResult
+                WHERE id = :id
+            ');
+            var_dump($params);die;
+
+            // Bind the parameters
+            foreach ($params as $key => $value) {
+                $statement->bindValue($key, $value);
+            }
+
             return $statement->execute();
         }
+        return false;
     }
 
     public static function delete(int $id)
@@ -222,7 +263,7 @@ class Interview extends \RedBeanPHP\SimpleModel
     public static function findByDate(DateTime $interviewDate)
     {
         $pdo = Application::$app->pdo;
-        $statement = $pdo->prepare('Select * from `interviews` Where interview_date=:interviewDate');
+        $statement = $pdo->prepare('Select * from `interviews` Where interviewDate=:interviewDate');
         $statement->execute(['interviewDate' => $interviewDate]);
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
