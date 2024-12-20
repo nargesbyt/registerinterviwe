@@ -19,7 +19,7 @@
     @endforeach
     <div class="container mt-5">
         <h2>فرم مصاحبه جدید</h2>
-        <form id="create_interview" action="/interview/create" method="post" novalidate>
+        <form class="interview-form" id="create_interview" action="/interview/create" method="post" novalidate>
             <div class="row">
                 <div class="col-md-2">
                     <script type="text/javascript">
@@ -113,15 +113,15 @@
                     <div class="invalid-feedback" id="error-childNum"></div>
                 </div>
                 <div class="col-md-2">
-                    <label for="computerLiteracy">کاربری کامپیوتر</label>
-                    <select name="computerLiteracy" id="computerLiteracy" class="form-control">
+                    <label for="computerSkill">کاربری کامپیوتر</label>
+                    <select name="computerSkill" id="computerSkill" class="form-control">
                     <option value="" disabled selected>کاربری کامپیوتر</option>
                         <option value=0>صفر</option>
                         <option value=1>کم</option>
                         <option value=2>متوسط</option>
                         <option value=3>حرفه ای</option>
                     </select>
-                    <div class="invalid-feedback" id="error-computerLiteracy"></div>
+                    <div class="invalid-feedback" id="error-computerSkill"></div>
                 </div>
                 <div class="col-md-2">
                     <label for="phoneNum">شماره موبایل</label>
@@ -169,6 +169,7 @@
                         <option value=1>بله</option>
                         <option value=0>خیر</option>
                     </select>
+                    <div class="invalid-feedback" id="error-knowAboutUs"></div>
                 </div>
                 <div class="col-md-4">
                     <label for="haveFriendHere">دوستی داشته که در زومیلا کار کنه</label>
@@ -177,10 +178,12 @@
                         <option value=1>بله</option>
                         <option value=0>خیر</option>
                     </select>
+                    <div class="invalid-feedback" id="error-haveFriendHere"></div>
                 </div>
                 <div class="col-md-4">
                     <label for="wayToCome">چطور تا سر کار میاد</label>
                     <input type="text" class="form-control" name="wayToCome" id="wayToCome">
+                    <div class="invalid-feedback" id="error-wayToCome"></div>
                 </div>
 
             </div>
@@ -231,6 +234,12 @@
                     </select>
                 </div>
 
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <label for="interviewResult">نتیجه نهایی مصاحبه و امتیاز :</label>
+                    <input type="text" class="form-control" name="interviewResult" id="interviewResult">
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-12">

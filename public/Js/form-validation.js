@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Handle form submission
-    document.getElementById("create_interview").addEventListener("submit", function (event) {
-        let isValid = true;
+    document.querySelectorAll(".interview-form").forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+            let isValid = true;
 
         // Clear previous error messages and classes
-        document.querySelectorAll(".invalid-feedback").forEach(function (element) {
+        form.querySelectorAll(".invalid-feedback").forEach(function (element) {
             element.textContent = "";
             element.style.display = "none";
         });
-        document.querySelectorAll(".form-control").forEach(function (element) {
+        form.querySelectorAll(".form-control").forEach(function (element) {
             element.classList.remove("is-invalid");
         });
 
         // Validate Persian Date
-        let persianDateInput = document.getElementById("interviewDate").value;
-        let persianTimeInput = document.getElementById("interviewTime").value;
+        let persianDateInput = form.querySelector("#interviewDate").value;
+        let persianTimeInput = form.querySelector("#interviewTime").value;
 
         if (persianDateInput !== "") {
             try {
@@ -45,14 +46,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Validate year (must be > 0 and not greater than current Persian year)
                     if (year <= 1350) {
-                        document.getElementById("error-interviewDate").textContent = "سال وارد شده معتبر نیست.";
-                        document.getElementById("interviewDate").classList.add("is-invalid");
-                        document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                        form.querySelector("#error-interviewDate").textContent = "سال وارد شده معتبر نیست.";
+                        form.querySelector("#interviewDate").classList.add("is-invalid");
+                        form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                         isValid = false;
                     } else if (year > currentYear) {
-                        document.getElementById("error-interviewDate").textContent = "سال وارد شده نمی‌تواند بزرگتر از سال جاری باشد.";
-                        document.getElementById("interviewDate").classList.add("is-invalid");
-                        document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                        form.querySelector("#error-interviewDate").textContent = "سال وارد شده نمی‌تواند بزرگتر از سال جاری باشد.";
+                        form.querySelector("#interviewDate").classList.add("is-invalid");
+                        form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                         isValid = false;
                     }
 
@@ -60,22 +61,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (year === currentYear) {
                         // Validate month (1-12)
                         if (month < 1 || month > 12) {
-                            document.getElementById("error-interviewDate").textContent = "ماه وارد شده نامعتبر است.";
-                            document.getElementById("interviewDate").classList.add("is-invalid");
-                            document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                            form.querySelector("#error-interviewDate").textContent = "ماه وارد شده نامعتبر است.";
+                            form.querySelector("#interviewDate").classList.add("is-invalid");
+                            form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                             isValid = false;
                         } else if (month > currentMonth) {
                             // Month cannot be greater than the current month
-                            document.getElementById("error-interviewDate").textContent = "ماه وارد شده نمی‌تواند بزرگتر از ماه جاری باشد.";
-                            document.getElementById("interviewDate").classList.add("is-invalid");
-                            document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                            form.querySelector("#error-interviewDate").textContent = "ماه وارد شده نمی‌تواند بزرگتر از ماه جاری باشد.";
+                            form.querySelector("#interviewDate").classList.add("is-invalid");
+                            form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                             isValid = false;
                         } else if (month === currentMonth) {
                             // Validate day based on the current month
                             if (day < 1 || day > currentDay) {
-                                document.getElementById("error-interviewDate").textContent = "روز وارد شده نمی‌تواند بزرگتر از روز جاری باشد.";
-                                document.getElementById("interviewDate").classList.add("is-invalid");
-                                document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                                form.querySelector("#error-interviewDate").textContent = "روز وارد شده نمی‌تواند بزرگتر از روز جاری باشد.";
+                                form.querySelector("#interviewDate").classList.add("is-invalid");
+                                form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                                 isValid = false;
                             }
                         }
@@ -85,33 +86,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (month === 12) {
                         if (isLeapYear(year)) {
                             if (day < 1 || day > 30) {
-                                document.getElementById("error-interviewDate").textContent = "ماه 12 برای سال کبیسه باید بین 1 تا 30 روز باشد.";
-                                document.getElementById("interviewDate").classList.add("is-invalid");
-                                document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                                form.querySelector("#error-interviewDate").textContent = "ماه 12 برای سال کبیسه باید بین 1 تا 30 روز باشد.";
+                                form.querySelector("#interviewDate").classList.add("is-invalid");
+                                form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                                 isValid = false;
                             }
                         } else {
                             if (day < 1 || day > 29) {
-                                document.getElementById("error-interviewDate").textContent = "ماه 12 برای سال غیرکبیسه باید بین 1 تا 29 روز باشد.";
-                                document.getElementById("interviewDate").classList.add("is-invalid");
-                                document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                                form.querySelector("#error-interviewDate").textContent = "ماه 12 برای سال غیرکبیسه باید بین 1 تا 29 روز باشد.";
+                                form.querySelector("#interviewDate").classList.add("is-invalid");
+                                form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                                 isValid = false;
                             }
                         }
                     } else if (month >= 1 && month <= 6) {
                         // Months 1 to 6 have 31 days
                         if (day < 1 || day > 31) {
-                            document.getElementById("error-interviewDate").textContent = "ماه وارد شده فقط می‌تواند بین 1 تا 31 روز باشد.";
-                            document.getElementById("interviewDate").classList.add("is-invalid");
-                            document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                            form.querySelector("#error-interviewDate").textContent = "ماه وارد شده فقط می‌تواند بین 1 تا 31 روز باشد.";
+                            form.querySelector("#interviewDate").classList.add("is-invalid");
+                            form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                             isValid = false;
                         }
                     } else if (month >= 7 && month <= 11) {
                         // Months 7 to 11 have 30 days
                         if (day < 1 || day > 30) {
-                            document.getElementById("error-interviewDate").textContent = "ماه وارد شده فقط می‌تواند بین 1 تا 30 روز باشد.";
-                            document.getElementById("interviewDate").classList.add("is-invalid");
-                            document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                            form.querySelector("#error-interviewDate").textContent = "ماه وارد شده فقط می‌تواند بین 1 تا 30 روز باشد.";
+                            form.querySelector("#interviewDate").classList.add("is-invalid");
+                            form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                             isValid = false;
                         }
                     }
@@ -119,9 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Validate time (HH:mm:ss)
                     if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
-                        document.getElementById("error-interviewTime").textContent = "ساعت وارد شده معتبر نیست.";
-                        document.getElementById("interviewTime").classList.add("is-invalid");
-                        document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                        form.querySelector("#error-interviewTime").textContent = "ساعت وارد شده معتبر نیست.";
+                        form.querySelector("#interviewTime").classList.add("is-invalid");
+                        form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                         isValid = false;
                     }
 
@@ -140,19 +141,20 @@ document.addEventListener("DOMContentLoaded", function () {
                             second.toString().padStart(2, '0');
 
                         // Set the combined datetime into a hidden input
-                        document.getElementById("gregorianDatetime").value = gregorianDateTime;  // Set hidden input value
+                        form.querySelector("#gregorianDatetime").value = gregorianDateTime;  // Set hidden input value
+                        console.log("gregorian date:",gregorianDateTime);
                     }
 
                 } else {
-                    document.getElementById("error-interviewDate").textContent = "فرمت تاریخ اشتباه است.";
-                    document.getElementById("interviewDate").classList.add("is-invalid");
-                    document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                    form.querySelector("#error-interviewDate").textContent = "فرمت تاریخ اشتباه است.";
+                    form.querySelector("#interviewDate").classList.add("is-invalid");
+                    form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                     isValid = false;
                 }
             } catch (error) {
-                /*document.getElementById("error-interviewDate").textContent = "فرمت تاریخ اشتباه است.";
-                document.getElementById("interviewDate").classList.add("is-invalid");
-                document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+                /*form.querySelector("#error-interviewDate").textContent = "فرمت تاریخ اشتباه است.";
+                form.querySelector("#interviewDate").classList.add("is-invalid");
+                form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
                 isValid = false;*/
 
                 console.error("Error processing Persian date or time:", error);
@@ -160,9 +162,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("تاریخ یا ساعت وارد شده معتبر نیست.");
             }
         } else {
-            document.getElementById("error-interviewDate").textContent = "پر کردن فیلد تاریخ مصاحبه الزامی است.";
-            document.getElementById("interviewDate").classList.add("is-invalid");
-            document.getElementById("error-interviewDate").style.display = "block";  // Explicitly set display
+            form.querySelector("#error-interviewDate").textContent = "پر کردن فیلد تاریخ مصاحبه الزامی است.";
+            form.querySelector("#interviewDate").classList.add("is-invalid");
+            form.querySelector("#error-interviewDate").style.display = "block";  // Explicitly set display
             isValid = false;
         }
 
@@ -173,57 +175,83 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
       
-        let careerFieldIdInput = document.getElementById("careerFieldId").value;
+        let careerFieldIdInput = form.querySelector("#careerFieldId").value;
         console.log("careerFieldId :", careerFieldIdInput);
-        if (document.getElementById("careerFieldId").value === "" || document.getElementById("careerFieldId").value === null) {
-            document.getElementById("error-careerFieldId").textContent = "پر کردن فیلد سمت الزامی است.";
-            document.getElementById("error-careerFieldId").style.display = "block";  // Explicitly set display
-            document.getElementById("careerFieldId").classList.add("is-invalid");
+        if (form.querySelector("#careerFieldId").value === "" || form.querySelector("#careerFieldId").value === null) {
+            form.querySelector("#error-careerFieldId").textContent = "پر کردن فیلد سمت الزامی است.";
+            form.querySelector("#error-careerFieldId").style.display = "block";  // Explicitly set display
+            form.querySelector("#careerFieldId").classList.add("is-invalid");
             isValid = false;
         }
 
         // Regular expression to check for Persian characters and spaces
         let namePattern = /^[\u0600-\u06FF\s]+$/;
 
-        if (document.getElementById("firstname").value !== "") {
-            let firstname = document.getElementById("firstname").value;
+        if (form.querySelector("#firstname").value !== "") {
+            let firstname = form.querySelector("#firstname").value;
             // Validate first name
             if (!namePattern.test(firstname)) {
-                document.getElementById("error-firstname").textContent = "نام باید فقط شامل حروف فارسی و فضای خالی باشد.";
-                document.getElementById("firstname").classList.add("is-invalid");
-                document.getElementById("error-firstname").style.display = "block";  // Explicitly set display
+                form.querySelector("#error-firstname").textContent = "نام باید فقط شامل حروف فارسی و فضای خالی باشد.";
+                form.querySelector("#firstname").classList.add("is-invalid");
+                form.querySelector("#error-firstname").style.display = "block";  // Explicitly set display
                 isValid = false;
             }
         }else {
-            document.getElementById("error-firstname").textContent = "پر کردن فیلد نام الزامی است.";
-            document.getElementById("error-firstname").style.display = "block";  // Explicitly set display
-            document.getElementById("firstname").classList.add("is-invalid");
+            form.querySelector("#error-firstname").textContent = "پر کردن فیلد نام الزامی است.";
+            form.querySelector("#error-firstname").style.display = "block";  // Explicitly set display
+            form.querySelector("#firstname").classList.add("is-invalid");
             isValid = false;
         }
 
-        if (document.getElementById("lastname").value !== "") {
-            let lastname = document.getElementById("lastname").value;
+        if (form.querySelector("#lastname").value !== "") {
+            let lastname = form.querySelector("#lastname").value;
             // Validate last name
             if (!namePattern.test(lastname)) {
-                document.getElementById("error-lastname").textContent = "نام خانوادگی باید فقط شامل حروف فارسی و فضای خالی باشد.";
-                document.getElementById("lastname").classList.add("is-invalid");
-                document.getElementById("error-lastname").style.display = "block";  // Explicitly set display
+                form.querySelector("#error-lastname").textContent = "نام خانوادگی باید فقط شامل حروف فارسی و فضای خالی باشد.";
+                form.querySelector("#lastname").classList.add("is-invalid");
+                form.querySelector("#error-lastname").style.display = "block";  // Explicitly set display
                 isValid = false;
             }
+
         }else {
-            document.getElementById("error-lastname").textContent = "پر کردن فیلد نام خانوادگی الزامی است.";
-            document.getElementById("error-lastname").style.display = "block";  // Explicitly set display
-            document.getElementById("lastname").classList.add("is-invalid");
+            form.querySelector("#error-lastname").textContent = "پر کردن فیلد نام خانوادگی الزامی است.";
+            form.querySelector("#error-lastname").style.display = "block";  // Explicitly set display
+            form.querySelector("#lastname").classList.add("is-invalid");
             isValid = false;
         }
+
+        /*isValid &= validateFieldLength("education", 50, "طول ورودی حداکثر ۵۰ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("freetime", 50, "طول ورودی حداکثر ۵۰ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("address", 50, "طول ورودی حداکثر ۵۰ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("phoneNum", 11, "طول ورودی حداکثر ۱۱ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("reasonForJob", 20, "طول ورودی حداکثر ۲۰ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("employmentHistory", 10000, "طول ورودی حداکثر ۱۰۰۰۰ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("interviewResult", 10000, "طول ورودی حداکثر ۱۰۰۰۰ کاراکتر باید باشد.");
+        isValid &= validateFieldLength("fatherJob", 20, "طول ورودی حداکثر ۲۰ کاراکتر باید باشد.");*/
         console.log("isvalid:", isValid);
         // If not valid, prevent form submission
         if (!isValid) {
             event.preventDefault();
         }
     });
-    // Helper function to check if the Persian year is a leap year
-    function isLeapYear(year) {
-        return (year % 33 == 1) || (year % 33 == 0 && year % 4 == 0);
-    }
+    
 });
+});
+// Helper function to check if the Persian year is a leap year
+function isLeapYear(year) {
+    return (year % 33 == 1) || (year % 33 == 0 && year % 4 == 0);
+}
+function validateFieldLength(fieldId, maxLength, errorMessage) {
+    let field = form.querySelector(fieldId);
+    let value = field.value;
+
+    // Check if the field value is not empty and its length exceeds maxLength
+    if (value !== "" && value.length > maxLength) {
+        // Show error message
+        form.querySelector("#error-" + fieldId).textContent = errorMessage;
+        form.querySelector("#error-" + fieldId).style.display = "block";  // Show error message
+        field.classList.add("#is-invalid");  // Add invalid class to field
+        return false;  // Validation failed
+    } 
+    return true;
+}

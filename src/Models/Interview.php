@@ -39,14 +39,7 @@ class Interview extends \RedBeanPHP\SimpleModel
         :reasonForJob, :interviewResult, :internship, :freetime, :englishLevel, :employmentAdv,
         :computerSkill, :knowAboutUs, :haveFriendHere, :wayToCome, :lastReadBook, :characterType,
         :coverType, :migrateIntention)');
-
-        // Bind the parameters
-        /*foreach ($data as $key => $value) {
-            $statement->bindValue($key, $value);
-        }*/
-        //in case $data has got extra fields assign parameters one by one.
-
-
+        
         $statement->bindParam('firstname', $data['firstname']);
         $statement->bindParam('lastname', $data['lastname']);
         $statement->bindParam('education', $data['education']);
@@ -67,7 +60,7 @@ class Interview extends \RedBeanPHP\SimpleModel
         $statement->bindParam('freetime', $data['freetime']);
         $statement->bindParam('englishLevel', $data['englishLevel']);
         $statement->bindParam('employmentAdv', $data['employmentAdv']);
-        $statement->bindParam('computerSkill', $data['computerLiteracy']);
+        $statement->bindParam('computerSkill', $data['computerSkill']);
         $statement->bindParam('knowAboutUs', $data['knowAboutUs']);
         $statement->bindParam('haveFriendHere', $data['haveFriendHere']);
         $statement->bindParam('wayToCome', $data['wayToCome']);
@@ -115,20 +108,21 @@ class Interview extends \RedBeanPHP\SimpleModel
         $statement->execute();
 
         $interviews = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //var_dump($interviews);die;
 
-        // Loop through the interviews and transform the maritalStatus field
+        // Loop through the interviews and transform integer fields to their labels
         foreach ($interviews as &$interview) {
-            // Convert the integer value to a string for maritalStatus
+            // Convert the integer value to a string for fields
             if (is_array($interview)) {
                 $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus']?? null);
-                $interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill']?? null);
+                //$interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill']?? null);
                 $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel']?? null);
                 $interview['field'] = $interview['field'] ?? 'نامشخص';  // In case careerField is null
-                /*$interview['internship'] = self::getBoolLabel($interview['internship']?? null);
+                $interview['internship'] = self::getBoolLabel($interview['internship']?? null);
                 $interview['knowAboutUs'] = self::getBoolLabel($interview['knowAboutUs']?? null);
                 $interview['haveFriendHere'] = self::getBoolLabel($interview['haveFriendHere']?? null);
                 $interview['migrateIntention'] = self::getBoolLabel($interview['migrateIntention']?? null);
-                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType']?? null);*/
+                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType']?? null);
             }
         }
 
@@ -147,11 +141,11 @@ class Interview extends \RedBeanPHP\SimpleModel
     public static function getBoolLabel($status)
     {
         $status = $status ?? 0;
-        $status = [
+        $statusarray = [
             0 => 'خیر',
             1 => 'بله'
         ];
-        return $status[$status] ?? 'نامشخص';
+        return $statusarray[$status] ?? 'نامشخص';
     }
     public static function getMaritalStatusLabel($status): string
     {
@@ -214,6 +208,7 @@ class Interview extends \RedBeanPHP\SimpleModel
                     firstname = :firstname,
                     lastname = :lastname,
                     careerFieldId = :careerFieldId,
+                    education = :education,
                     interviewDate = :interviewDate,
                     age = :age,
                     address = :address,
@@ -238,12 +233,38 @@ class Interview extends \RedBeanPHP\SimpleModel
                     interviewResult = :interviewResult
                 WHERE id = :id
             ');
-            var_dump($params);die;
-
+            //var_dump($params);die;
             // Bind the parameters
-            foreach ($params as $key => $value) {
+            /*foreach ($params as $key => $value) {
                 $statement->bindValue($key, $value);
-            }
+            }*/
+            $statement->bindParam('firstname', $params['firstname']);
+            $statement->bindParam('lastname', $params['lastname']);
+            $statement->bindParam('education', $params['education']);
+            $statement->bindParam('age', $params['age']);
+            $statement->bindParam('address', $params['address']);
+            $statement->bindParam('maritalStatus', $params['maritalStatus']);
+            $statement->bindParam('phoneNum', $params['phoneNum']);
+            $statement->bindParam('interviewDate', $params['interviewDate']);
+            $statement->bindParam('careerFieldId', $params['careerFieldId']);
+            $statement->bindParam('childNum', $params['childNum']);
+            $statement->bindParam('employmentHistory', $params['employmentHistory']);
+            $statement->bindParam('fatherJob', $params['fatherJob']);
+            $statement->bindParam('reasonForJob', $params['reasonForJob']);
+            $statement->bindParam('interviewResult', $params['interviewResult']);
+            $statement->bindParam('internship',$params['internship']);
+            $statement->bindParam('freetime', $params['freetime']);
+            $statement->bindParam('englishLevel', $params['englishLevel']);
+            $statement->bindParam('employmentAdv', $params['employmentAdv']);
+            $statement->bindParam('computerSkill', $params['computerSkill']);
+            $statement->bindParam('knowAboutUs', $params['knowAboutUs']);
+            $statement->bindParam('haveFriendHere', $params['haveFriendHere']);
+            $statement->bindParam('wayToCome', $params['wayToCome']);
+            $statement->bindParam('lastReadBook', $params['lastReadBook']);
+            $statement->bindParam('characterType', $params['characterType']);
+            $statement->bindParam('coverType', $params['coverType']);
+            $statement->bindParam('migrateIntention', $params['migrateIntention']);
+            $statement->bindParam('id',$id);
 
             return $statement->execute();
         }

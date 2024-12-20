@@ -14,8 +14,13 @@ $request = ServerRequestFactory::fromGlobals(
 );
 
 $app = new Application($request);
-
-$response = $app->dispatch();
+try{
+    $response = $app->dispatch();
 
 // send the response to the browser
 (new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);
+
+}catch(Exception $e){
+    var_dump($e);die;
+}
+

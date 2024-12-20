@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\CareerField;
 use App\Models\Interview;
+use App\Services\DateConversionService;
+use App\Services\PaginationService;
 use Carbon\Carbon;
 use Jenssegers\Blade\Blade;
 use Laminas\Diactoros\Response;
@@ -27,64 +29,45 @@ class InterviewController extends BaseController
 
         // Fetch the interviews for the current page
         $interviews = Interview::list($page, $recordsPerPage);
-        foreach ($interviews as $interview) {
-            if (isset($interview['interviewDate'])) {
-                // Convert the Gregorian interview date to Persian
-                $gregorianDate = new \DateTime($interview['interviewDate']);
-                $carbonDate = Carbon::instance($gregorianDate); // Convert DateTime to Carbon instance
 
-                // Convert to Jalali (Persian) date
-                $persianDate = Jalalian::fromCarbon($carbonDate);
-                
-                $interview['interviewDate'] = $persianDate->format('Y/m/d'); // You can customize the format
-            }
-        }
+        // Convert interview dates to Persian format
+        (new DateConversionService())->convertInterviewDates($interviews);
 
         // Get the total number of interviews
         $totalCount = Interview::getTotalCount();
+        $paginationService = new PaginationService();
+        $totalPages = $paginationService->calculateTotalPages($totalCount, $recordsPerPage);
 
-        // Calculate total pages
-        $totalPages = ceil($totalCount / $recordsPerPage);
-
-        // Pass data to the view
+        // Return response with rendered view
         return new HtmlResponse($this->render('interviews.index', [
             'interviews' => $interviews,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]));
+
     }
 
     public function get(ServerRequestInterface $request): ResponseInterface
-    {   $id = $request->getAttribute('id');
+    {
+        $id = $request->getAttribute('id');
         $interview = Interview::getById((int)$id);
         return new HtmlResponse($this->render('interviews.show', ['interview' => $interview]));
-        
     }
 
-
-    public function create(ServerRequestInterface $request): ResponseInterface
+    private function convertStringFields(array $params): array
     {
-        $response = new Response();
-        if ($request->getMethod() == 'GET') {
-            $careerFields = CareerField::list();
-            //var_dump($careerFields);die;
-            $errors = session()->flash('errors')?? new ErrorBag();
-            $response->getBody()->write($this->render('interviews.create',['careerFields'=>$careerFields , 'errors'=>$errors]));
-            return $response;
-        }
-        $params = (array)$request->getParsedBody();
-        $careerFieldId = isset($params['careerFieldId'])? (int) $params['careerFieldId'] : null;
+        $careerFieldId = isset($params['careerFieldId']) ? (int) $params['careerFieldId'] : null;
         $age = isset($params['age']) && is_numeric($params['age']) ? (int) $params['age'] : null;
         $maritalStatus = isset($params['maritalStatus']) && is_numeric($params['maritalStatus']) ? (int) $params['maritalStatus'] : null;
         $childNum = isset($params['childNum']) && is_numeric($params['childNum']) ? (int) $params['childNum'] : null;
         $internship = isset($params['internship']) && is_numeric($params['internship']) ? (int) $params['internship'] : null;
         $englishLevel = isset($params['englishLevel']) && is_numeric($params['englishLevel']) ? (int) $params['englishLevel'] : null;
-        $computerSkill = isset($params['computerLiteracy']) && is_numeric($params['computerLiteracy']) ? (int) $params['computerLiteracy'] : null;
+        $computerSkill = isset($params['computerSkill']) && is_numeric($params['computerSkill']) ? (int) $params['computerSkill'] : null;
         $knowAboutUs = isset($params['knowAboutUs']) && is_numeric($params['knowAboutUs']) ? (int) $params['knowAboutUs'] : null;
         $haveFriendHere = isset($params['haveFriendHere']) && is_numeric($params['haveFriendHere']) ? (int) $params['haveFriendHere'] : null;
         $characterType = isset($params['characterType']) && is_numeric($params['characterType']) ? (int) $params['characterType'] : null;
         $migrateIntention = isset($params['migrateIntention']) && is_numeric($params['migrateIntention']) ? (int) $params['migrateIntention'] : null;
-        
+
         $params['age'] = $age;
         $params['maritalStatus'] = $maritalStatus;
         $params['childNum'] = $childNum;
@@ -96,63 +79,7 @@ class InterviewController extends BaseController
         $params['characterType'] = $characterType;
         $params['migrateIntention'] = $migrateIntention;
         $params['careerFieldId'] = $careerFieldId;
-        // Sanitize input parameters before validation and saving
-        $params = $this->sanitize($params);
-
-        // Validate and sanitize interview date and time (they should already be validated in the frontend)
-        // Retrieve the Gregorian Date from the hidden field
-        $gregorianDate = $params['gregorianDatetime'] ?? null;
-
-        // Remove unnecessary fields from $params before saving to the database
-        unset($params['interviewDate']); // Remove Persian interviewDate
-        unset($params['interviewTime']); // Remove interviewTime
-        
-        if (!$gregorianDate) {
-            // If no gregorianDate was set, return an error response
-            $response->getBody()->write('Gregorian date is missing');
-            return $response->withStatus(400, 'Bad Request');
-        }
-
-        try {
-            // Validate and format the Gregorian date
-            $dateTime = new \DateTime($gregorianDate);  // This will throw an exception if invalid
-            $gregorianDate = $dateTime->format('Y-m-d H:i:s');  // Store it in a standardized format
-        } catch (\Exception $e) {
-            // If the Gregorian date format is invalid, return an error
-            $response->getBody()->write('Invalid Gregorian date format');
-            return $response->withStatus(400, 'Bad Request');
-        }
-
-        // Add the Gregorian date to the params for saving
-        $params['interviewDate'] = $gregorianDate; // This will be stored in the database
-        
-        
-    
-        //var_dump($params);die;
-        
-        $validation = $this->validate($params, [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'interviewDate' => 'required',
-            //'age' => 'min'
-            'careerFieldId'=>'required',
-
-        ]);
-
-        if ($validation->fails()) {
-            session()->flash('errors',$validation->errors());
-            $errors = $validation->errors()->all();
-            $response->getBody()->write($this->render('interviews.create', ['errors' => $errors]));
-            return $response;
-        }
-        //var_dump($params);die;
-        $result = Interview::save($params);
-        if($result){
-             return new RedirectResponse('/interview');
-        }
-        var_dump($response->getBody()->write('error with database')); die;
-        return $response->withStatus(500,'server error');
-    
+        return $params;
     }
 
     // Sanitize the input parameters
@@ -178,7 +105,7 @@ class InterviewController extends BaseController
         return $params;
     }
 
-    // Optional: If you need a specific date format validation and sanitation
+    // If you need a specific date format validation and sanitation
     private function sanitizeDate($date)
     {
         // Ensure the date is in a valid format (e.g., YYYY/MM/DD) before storing
@@ -196,46 +123,181 @@ class InterviewController extends BaseController
         }
         return null; // Return null if date is not valid
     }
+
+    public function create(ServerRequestInterface $request): ResponseInterface
+    {
+        $response = new Response();
+
+        if ($request->getMethod() == 'GET') {
+            return $this->handleGetRequest($response);
+        }
+
+        $params = (array) $request->getParsedBody();
+        $params = $this->sanitize($this->convertStringFields($params));
+
+        $gregorianDate = $params['gregorianDatetime'] ?? null;
+        $params = $this->removeUnnecessaryFields($params);
+
+        if (!$gregorianDate) {
+            return $this->handleError($response, 'Gregorian date is missing', 400);
+        }
+
+        // Handle and validate the Gregorian date
+        $gregorianDate = $this->handleGregorianDate($gregorianDate, $response);
+        if ($gregorianDate === null) {
+            return $this->handleError($response, 'Invalid Gregorian date format', 400);
+        }
+
+        $params['interviewDate'] = $gregorianDate;
+
+        // Validate input fields
+        $validation = $this->validateInterviewData($params);
+        if ($validation->fails()) {
+            return $this->handleValidationErrors($validation, $response);
+        }
+
+        // Save the interview record
+        $result = $this->saveInterviewData($params);
+        if ($result) {
+            return new RedirectResponse('/interview');
+        }
+
+        return $this->handleError($response, 'Error with database', 500);
+    }
+
+    private function handleGetRequest(ResponseInterface $response): ResponseInterface
+    {
+        $careerFields = CareerField::list();
+        $errors = session()->flash('errors') ?? new ErrorBag();
+        $response->getBody()->write($this->render('interviews.create', ['careerFields' => $careerFields, 'errors' => $errors]));
+        return $response;
+    }
+
+    private function handleError(ResponseInterface $response, string $message, int $statusCode): ResponseInterface
+    {
+        $response->getBody()->write($message);
+        return $response->withStatus($statusCode, 'Bad Request');
+    }
+
+    private function handleGregorianDate(string $gregorianDate, ResponseInterface $response): ?string
+    {
+        try {
+            $dateTime = new \DateTime($gregorianDate);  // This will throw an exception if invalid
+            return $dateTime->format('Y-m-d H:i:s');
+        } catch (\Exception $e) {
+            return null; // Invalid date format
+        }
+    }
+
+    private function removeUnnecessaryFields(array $params): array
+    {
+        unset($params['interviewDate']); // Remove Persian interviewDate
+        unset($params['interviewTime']); // Remove interviewTime
+        return $params;
+    }
+
+    private function validateInterviewData(array $params)
+    {
+        return $this->validate($params, [
+            'firstname' => 'required|max:20',
+            'lastname' => 'required|max:20|regex:/^[\x{0600}-\x{06FF}\x{0750}-\x{077F}\x{08A0}-\x{08FF}\x{FB50}-\x{FEFF}\x{0650}\x{064B}\x{064C}\x{064D}\x{0652}\x{0670}\x{0671}]+$/u',
+            'interviewDate' => 'required',
+            'careerFieldId' => 'required|numeric',
+            'education' => 'max:50',
+            'age' => 'numeric|between:1,99',
+            'address' => 'max:50',
+            'maritalStatus' => 'numeric|min:0|max:4',
+            'childNum' => 'numeric|between:0,10',
+            'phoneNum' => 'max:11',
+            'employmentHistory' => 'max:10000',
+            'fatherJob' => 'max:20',
+            'internship' => 'integer|in:0,1',
+            'englishLevel' => 'integer',
+            'computerSkill' => 'integer',
+            'characterType' => 'integer',
+            'haveFriendHere' => 'integer',
+            'knoeAboutUs' => 'integer',
+            'migrateIntention' => 'integer'
+        ]);
+    }
+
+    private function handleValidationErrors($validation, ResponseInterface $response): ResponseInterface
+    {
+        session()->flash('errors', $validation->errors());
+        $errors = $validation->errors()->all();
+        $response->getBody()->write($this->render('interviews.create', ['errors' => $errors]));
+        return $response;
+    }
+
+    private function saveInterviewData(array $params): bool
+    {
+        return Interview::save($params);
+    }
+
     public function editForm(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');
         $interview = Interview::getById($id);
-
         if ($interview === null) {
             return new Response('Interview not found', 404);
         }
 
+        if (isset($interview['interviewDate'])) {
+            // Convert the Gregorian interview date to Persian
+            $gregorianDate = new \DateTime($interview['interviewDate']);
+            $carbonDate = Carbon::instance($gregorianDate); // Convert DateTime to Carbon instance
+
+            // Convert to Jalali (Persian) date
+            $persianDate = Jalalian::fromCarbon($carbonDate);
+
+            $interview['interviewDate'] = $persianDate->format('Y/m/d'); // You can customize the format
+            $interview['interviewTime'] = $carbonDate->format('H:i:s');
+        }
+        $careerFields = CareerField::list();
+
         // Render a view with the interview data
         return new HtmlResponse($this->render('interviews.edit', [
             'interview' => $interview,
+            'careerFields' => $careerFields
         ]));
     }
 
     public function update(ServerRequestInterface $request): ResponseInterface
     {
+        $response = new Response();
         $id = $request->getAttribute('id');
-        $params = $request->getParsedBody();
+        $params = (array) $request->getParsedBody();
+        //var_dump($params);die;
+        $params = $this->sanitize($this->convertStringFields($params));
+        $gregorianDate = $params['gregorianDatetime'] ?? null;
 
-        // Validate and sanitize the data
-        // (you can use more thorough validation as needed)
-        if (empty($params['firstname']) || empty($params['lastname'])) {
-            return new Response('Please fill all required fields.', 400);
+
+        $params = $this->removeUnnecessaryFields($params);
+
+        if (!$gregorianDate) {
+            return $this->handleError($response, 'Gregorian date is missing', 400);
         }
 
-        // Perform the update
-        if (Interview::update($params,$id)) {
+        // Handle and validate the Gregorian date
+        $gregorianDate = $this->handleGregorianDate($gregorianDate, $response);
+        if ($gregorianDate === null) {
+            return $this->handleError($response, 'Invalid Gregorian date format', 400);
+        }
+
+        $params['interviewDate'] = $gregorianDate;
+
+        // Validate input fields
+        $validation = $this->validateInterviewData($params);
+        if ($validation->fails()) {
+            return $this->handleValidationErrors($validation, $response);
+        }
+        if (Interview::update($params, $id)) {
             return new RedirectResponse('/interview');
         } else {
             return new Response('Failed to update interview.', 500);
         }
     }
 
-
-
-
-
-        
-    
     /*public function find(ServerRequestInterface $requst,$interviewDate):ResponseInterface
     {
 

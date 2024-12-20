@@ -9,15 +9,13 @@
     <link rel="stylesheet" href="./../../Css/style.css" />
 
     <title>ویرایش مصاحبه</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    
 
 </head>
 <body dir="rtl">
     <div class="container mt-5">
         <h2>فرم ویرایش مصاحبه</h2>
-            <form id="update_interview" action="/interview/<?php echo e($interview['id']); ?>/edit" method="post" novalidate>
+            <form class="interview-form" id="update_interview" action="/interview/<?php echo e($interview['id']); ?>/edit" method="post" novalidate>
 
             <div class="row">
                 <div class="col-md-2">
@@ -62,13 +60,13 @@
                     <label for="careerFieldId">سمت </label>
                     <select class="form-control" name="careerFieldId" id="careerFieldId">
                     <option value="" disabled selected>سمت را انتخاب کنید</option>
-                        <!--<?php $__currentLoopData = $careerFields; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $field): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $careerFields; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $field): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($field['id']); ?>" 
                                 <?php if($field['id'] == $interview['careerFieldId']): ?> selected <?php endif; ?>>
                                 <?php echo e($field['field']); ?>
 
                             </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                     <div class="invalid-feedback" id="error-careerFieldId"></div>
                 </div>
@@ -103,10 +101,10 @@
                     <label for="maritalStatus">وضعیت تاهل </label>
                     <select name="maritalStatus" class="form-control" id="maritalStatus">
                         <option value="" disabled selected>وضعیت تاهل</option>
-                        <option value=0>مجرد</option>
-                        <option value=1>متاهل</option>
-                        <option value=2>نامزد</option>
-                        <option value=3>مطلقه</option>
+                        <option value=0 <?php if($interview['maritalStatus'] == 0): ?> selected <?php endif; ?>>مجرد</option>
+                        <option value=1 <?php if($interview['maritalStatus'] == 1): ?> selected <?php endif; ?>>متاهل</option>
+                        <option value=2 <?php if($interview['maritalStatus'] == 2): ?> selected <?php endif; ?>>نامزد</option>
+                        <option value=3 <?php if($interview['maritalStatus'] == 3): ?> selected <?php endif; ?>>مطلقه</option>
                     </select>
                     <div class="invalid-feedback" id="error-maritalStatus"></div>
                 </div>
@@ -116,15 +114,15 @@
                     <div class="invalid-feedback" id="error-childNum"></div>
                 </div>
                 <div class="col-md-2">
-                    <label for="computerLiteracy">کاربری کامپیوتر</label>
-                    <select name="computerLiteracy" id="computerLiteracy" class="form-control">
+                    <label for="computerSkill">کاربری کامپیوتر</label>
+                    <select name="computerSkill"  class="form-control">
                     <option value="" disabled selected>کاربری کامپیوتر</option>
-                        <option value=0>صفر</option>
-                        <option value=1>کم</option>
-                        <option value=2>متوسط</option>
-                        <option value=3>حرفه ای</option>
+                        <option value=0 <?php if($interview['computerSkill'] == 0): ?> selected <?php endif; ?>>صفر</option>
+                        <option value=1 <?php if($interview['computerSkill'] == 1): ?> selected <?php endif; ?>>کم</option>
+                        <option value=2 <?php if($interview['computerSkill'] == 2): ?> selected <?php endif; ?>>متوسط</option>
+                        <option value=3 <?php if($interview['computerSkill'] == 3): ?> selected <?php endif; ?>>حرفه ای</option>
                     </select>
-                    <div class="invalid-feedback" id="error-computerLiteracy"></div>
+                    
                 </div>
                 <div class="col-md-2">
                     <label for="phoneNum">شماره موبایل</label>
@@ -157,8 +155,8 @@
                     <label for="internship">کارآموزی</label>
                     <select name="internship" id="internship" class="form-control">
                         <option value="" disabled selected>کارآموزی</option>
-                        <option value="1">بله</option>
-                        <option value="0">خیر</option>
+                        <option value=1 <?php if($interview['internship'] == 1): ?> selected <?php endif; ?>>بله</option>
+                        <option value=0 <?php if($interview['internship'] == 0): ?> selected <?php endif; ?>>خیر</option>
                     </select>
                     <div class="invalid-feedback" id="error-reasonForJob"></div>
                 </div>
@@ -169,16 +167,16 @@
                     <label for="knowAboutUs">اسم زومیلا را قبلا شنیده</label>
                     <select name="knowAboutUs" id="knowAboutUs" class="form-control">
                         <option value="" disabled selected>انتخاب کنید</option>
-                        <option value=1>بله</option>
-                        <option value=0>خیر</option>
+                        <option value=1 <?php if($interview['knowAboutUs'] == 1): ?> selected <?php endif; ?>>بله</option>
+                        <option value=0 <?php if($interview['knowAboutUs'] == 0): ?> selected <?php endif; ?>>خیر</option>
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label for="haveFriendHere">دوستی داشته که در زومیلا کار کنه</label>
                     <select name="haveFriendHere" id="haveFriendHere" class="form-control">
                     <option value="" disabled selected>انتخاب کنید</option>
-                        <option value=1>بله</option>
-                        <option value=0>خیر</option>
+                        <option value=1 <?php if($interview['haveFriendHere'] == 1): ?> selected <?php endif; ?>>بله</option>
+                        <option value=0 <?php if($interview['haveFriendHere'] == 0): ?> selected <?php endif; ?>>خیر</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -189,8 +187,8 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-4">
-                    <label for="freeTime">اوقات فراغت</label>
-                    <input type="text" class="form-control" name="freeTime" value="<?php echo e($interview['freetime']); ?>" id="freeTime">
+                    <label for="freetime">اوقات فراغت</label>
+                    <input type="text" class="form-control" name="freetime" value="<?php echo e($interview['freetime']); ?>" id="freetime">
                 </div>
                 <div class="col-md-4">
                     <label for="lastReadBook">آخرین بار که کتاب خوانده وچه کتابی</label>
@@ -200,8 +198,8 @@
                     <label for="characterType">درون گرا یا برون گرا</label>
                     <select name="characterType" id="characterType" class="form-control">
                         <option value="" disabled selected> انتخاب کنید</option>
-                        <option value=1>درون گرا</option>
-                        <option value=0>برون گرا</option>
+                        <option value=1 <?php if($interview['characterType'] == 1): ?> selected <?php endif; ?>>درون گرا</option>
+                        <option value=0 <?php if($interview['characterType'] == 0): ?> selected <?php endif; ?>>برون گرا</option>
                     </select>
                 </div>
 
@@ -219,21 +217,27 @@
                     <label for="englishLevel">سطح زبان انگلیسی</label>
                     <select name="englishLevel" class="form-control">
                     <option value="" disabled selected> انتخاب کنید</option>
-                        <option value=0>صفر</option>
-                        <option value=1>کم</option>
-                        <option value=2>متوسط</option>
-                        <option value=3>حرفه ای</option>
+                        <option value=0 <?php if($interview['englishLevel'] == 0): ?> selected <?php endif; ?>>صفر</option>
+                        <option value=1 <?php if($interview['englishLevel'] == 1): ?> selected <?php endif; ?>>کم</option>
+                        <option value=2 <?php if($interview['englishLevel'] == 2): ?> selected <?php endif; ?>>متوسط</option>
+                        <option value=3 <?php if($interview['englishLevel'] == 3): ?> selected <?php endif; ?>>حرفه ای</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="migrateIntention">قصد مهاجرت</label>
                     <select name="migrateIntention" id="migrateIntention" class="form-control">
                     <option value="" disabled selected> انتخاب کنید</option>
-                        <option value=1>بله</option>
-                        <option value=0>خیر</option>
+                        <option value=1 <?php if($interview['migrateIntention'] == 1): ?> selected <?php endif; ?>>بله</option>
+                        <option value=0 <?php if($interview['migrateIntention'] == 0): ?> selected <?php endif; ?>>خیر</option>
                     </select>
                 </div>
 
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <label for="interviewResult">نتیجه نهایی مصاحبه و امتیاز :</label>
+                    <input type="text" class="form-control" name="interviewResult" value="<?php echo e($interview['interviewResult']); ?>" id="interviewResult">
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-12">
@@ -242,4 +246,7 @@
             </div>
         </form>
     </div>
+    <script src="../../Js/form-validation.js"></script>
+</body>
+</html>
 <?php /**PATH /home/narges/registerinterviwe/resources/views/interviews/edit.blade.php ENDPATH**/ ?>
