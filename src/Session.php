@@ -3,6 +3,8 @@ namespace App;
 class Session{
 
     protected const FLASH_KEY='_flash_message';
+    protected const OLD_INPUT_KEY = '_old_input_data';
+    
     public function __construct()
     {   
         session_start();
@@ -23,6 +25,15 @@ class Session{
             ];
         }
         return $_SESSION[self::FLASH_KEY][$key]['value'] ?? null;
+    }
+
+    public function saveOldInput(array $input): void {
+        $_SESSION[self::OLD_INPUT_KEY] = $input;
+    }
+
+    // Method to retrieve old input data
+    public function getOldInput(): array {
+        return $_SESSION[self::OLD_INPUT_KEY] ?? [];
     }
 
     public function set(string $key,mixed $value):void{

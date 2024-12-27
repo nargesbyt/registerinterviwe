@@ -8,7 +8,7 @@
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script><!-- Persian Date Picker JS -->
     <link rel="stylesheet" href="./../../Css/style.css" />
 
-    <title>ویرایش مصاحبه</title>
+    <title>edit-interview</title>
     
 
 </head>

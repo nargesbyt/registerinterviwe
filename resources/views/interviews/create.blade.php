@@ -10,7 +10,7 @@
     <script src="http://babakhani.github.io/PersianWebToolkit/beta/lib/persian-datepicker/dist/js/persian-datepicker.js"></script><!-- Persian Date Picker JS -->
     <link rel="stylesheet" href="./../../Css/style.css" />
 
-    <title>افزودن فرم مصاحبه</title>
+    <title>create-interview</title>
 </head>
 
 <body dir=rtl>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-md-2">
                     <label for="firstname">نام</label>
-                    <input type="text" class="form-control" name="firstname" id="firstname" maxlength="20">
+                    <input type="text" class="form-control" name="firstname" id="firstname" value="{{ session()->getOldInput()['firstname'] ?? '' }}" maxlength="20">
                     <div class="invalid-feedback" id="error-firstname"></div>
                 </div>
                 <div class="col-md-2">
@@ -100,10 +100,14 @@
                     <label for="maritalStatus">وضعیت تاهل </label>
                     <select name="maritalStatus" class="form-control" id="maritalStatus">
                         <option value="" disabled selected>وضعیت تاهل</option>
-                        <option value=0>مجرد</option>
-                        <option value=1>متاهل</option>
-                        <option value=2>نامزد</option>
-                        <option value=3>مطلقه</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['maritalStatus']) && session()->getOldInput()['maritalStatus'] == 0) ? 'selected' : '' }}>مجرد</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['maritalStatus']) && session()->getOldInput()['maritalStatus'] == 1) ? 'selected' : '' }}>متاهل</option>
+                        <option value=2
+                        {{ (isset(session()->getOldInput()['maritalStatus']) && session()->getOldInput()['maritalStatus'] == 2) ? 'selected' : '' }}>نامزد</option>
+                        <option value=3
+                        {{ (isset(session()->getOldInput()['maritalStatus']) && session()->getOldInput()['maritalStatus'] == 3) ? 'selected' : '' }}>مطلقه</option>
                     </select>
                     <div class="invalid-feedback" id="error-maritalStatus"></div>
                 </div>
@@ -116,10 +120,14 @@
                     <label for="computerSkill">کاربری کامپیوتر</label>
                     <select name="computerSkill" id="computerSkill" class="form-control">
                     <option value="" disabled selected>کاربری کامپیوتر</option>
-                        <option value=0>صفر</option>
-                        <option value=1>کم</option>
-                        <option value=2>متوسط</option>
-                        <option value=3>حرفه ای</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['computerSkill']) && session()->getOldInput()['computerSkill'] == 0) ? 'selected' : '' }}>صفر</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['computerSkill']) && session()->getOldInput()['computerSkill'] == 1) ? 'selected' : '' }}>کم</option>
+                        <option value=2
+                        {{ (isset(session()->getOldInput()['computerSkill']) && session()->getOldInput()['computerSkill'] == 2) ? 'selected' : '' }}>متوسط</option>
+                        <option value=3
+                        {{ (isset(session()->getOldInput()['computerSkill']) && session()->getOldInput()['computerSkill'] == 3) ? 'selected' : '' }}>حرفه ای</option>
                     </select>
                     <div class="invalid-feedback" id="error-computerSkill"></div>
                 </div>
@@ -154,8 +162,10 @@
                     <label for="internship">کارآموزی</label>
                     <select name="internship" id="internship" class="form-control">
                         <option value="" disabled selected>کارآموزی</option>
-                        <option value="1">بله</option>
-                        <option value="0">خیر</option>
+                        <option value="1"
+                        {{ (isset(session()->getOldInput()['internship']) && session()->getOldInput()['internship'] == 1) ? 'selected' : '' }}>بله</option>
+                        <option value="0"
+                        {{ (isset(session()->getOldInput()['internship']) && session()->getOldInput()['internship'] == 0) ? 'selected' : '' }}>خیر</option>
                     </select>
                     <div class="invalid-feedback" id="error-reasonForJob"></div>
                 </div>
@@ -166,8 +176,10 @@
                     <label for="knowAboutUs">اسم زومیلا را قبلا شنیده</label>
                     <select name="knowAboutUs" id="knowAboutUs" class="form-control">
                         <option value="" disabled selected>انتخاب کنید</option>
-                        <option value=1>بله</option>
-                        <option value=0>خیر</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['knowAboutUs']) && session()->getOldInput()['knowAboutUs'] == 1) ? 'selected' : '' }}>بله</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['knowAboutUs']) && session()->getOldInput()['knowAboutUs'] == 0) ? 'selected' : '' }}>خیر</option>
                     </select>
                     <div class="invalid-feedback" id="error-knowAboutUs"></div>
                 </div>
@@ -175,8 +187,10 @@
                     <label for="haveFriendHere">دوستی داشته که در زومیلا کار کنه</label>
                     <select name="haveFriendHere" id="haveFriendHere" class="form-control">
                     <option value="" disabled selected>انتخاب کنید</option>
-                        <option value=1>بله</option>
-                        <option value=0>خیر</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['haveFriendHere']) && session()->getOldInput()['haveFriendHere'] == 1) ? 'selected' : '' }}>بله</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['haveFriendHere']) && session()->getOldInput()['haveFriendHere'] == 0) ? 'selected' : '' }}>خیر</option>
                     </select>
                     <div class="invalid-feedback" id="error-haveFriendHere"></div>
                 </div>
@@ -200,8 +214,10 @@
                     <label for="characterType">درون گرا یا برون گرا</label>
                     <select name="characterType" id="characterType" class="form-control">
                         <option value="" disabled selected> انتخاب کنید</option>
-                        <option value=1>درون گرا</option>
-                        <option value=0>برون گرا</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['characterType']) && session()->getOldInput()['characterType'] == 1) ? 'selected' : '' }}>درون گرا</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['characterType']) && session()->getOldInput()['characterType'] == 0) ? 'selected' : '' }}>برون گرا</option>
                     </select>
                 </div>
 
@@ -219,18 +235,24 @@
                     <label for="englishLevel">سطح زبان انگلیسی</label>
                     <select name="englishLevel" class="form-control">
                     <option value="" disabled selected> انتخاب کنید</option>
-                        <option value=0>صفر</option>
-                        <option value=1>کم</option>
-                        <option value=2>متوسط</option>
-                        <option value=3>حرفه ای</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['englishLevel']) && session()->getOldInput()['englishLevel'] == 0) ? 'selected' : '' }}>صفر</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['englishLevel']) && session()->getOldInput()['englishLevel'] == 1) ? 'selected' : '' }}>کم</option>
+                        <option value=2
+                        {{ (isset(session()->getOldInput()['englishLevel']) && session()->getOldInput()['englishLevel'] == 2) ? 'selected' : '' }}>متوسط</option>
+                        <option value=3
+                        {{ (isset(session()->getOldInput()['englishLevel']) && session()->getOldInput()['englishLevel'] == 3) ? 'selected' : '' }}>حرفه ای</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="migrateIntention">قصد مهاجرت</label>
                     <select name="migrateIntention" id="migrateIntention" class="form-control">
                     <option value="" disabled selected> انتخاب کنید</option>
-                        <option value=1>بله</option>
-                        <option value=0>خیر</option>
+                        <option value=1
+                        {{ (isset(session()->getOldInput()['migrateIntention']) && session()->getOldInput()['migrateIntention'] == 1) ? 'selected' : '' }}>بله</option>
+                        <option value=0
+                        {{ (isset(session()->getOldInput()['migrateIntention']) && session()->getOldInput()['migrateIntention'] == 0) ? 'selected' : '' }}>خیر</option>
                     </select>
                 </div>
 

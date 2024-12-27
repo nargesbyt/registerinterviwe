@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Application;
 use App\Models\CareerField;
 use App\Models\Interview;
 use App\Services\DateConversionService;
@@ -50,7 +51,15 @@ class InterviewController extends BaseController
     public function get(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getAttribute('id');
+        $id = htmlspecialchars($id,ENT_QUOTES);
         $interview = Interview::getById((int)$id);
+        if ($interview !== null) {
+            $interviews = [$interview];  // Wrap interview in an array variable
+            (new DateConversionService())->convertInterviewDates($interviews); // Pass the variable by reference
+            $interview = $interviews[0]; // After conversion, get the first element back
+        }
+        
+        //var_dump($interview);die;
         return new HtmlResponse($this->render('interviews.show', ['interview' => $interview]));
     }
 
@@ -99,7 +108,18 @@ class InterviewController extends BaseController
 
             // Optionally, you can sanitize numeric values (for example, careerFieldId) if required
             if (in_array($key, ['careerFieldId'], true)) {
-                $params[$key] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+                $sanitizedValue = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+        
+                // Validate if the sanitized value is an integer
+                if (filter_var($sanitizedValue, FILTER_VALIDATE_INT) !== false) {
+                    // If valid, assign it back to the params array
+                    $params[$key] = $sanitizedValue;
+                } else {
+                    // If invalid integer, handle error (set to null, or custom error message)
+                    $params[$key] = null;  // Example: set to null or error message
+                    echo "Invalid integer for key: $key\n";
+                }
+                
             }
         }
         return $params;
@@ -153,6 +173,7 @@ class InterviewController extends BaseController
         // Validate input fields
         $validation = $this->validateInterviewData($params);
         if ($validation->fails()) {
+            Application::$app->session->saveOldInput($params);
             return $this->handleValidationErrors($validation, $response);
         }
 
@@ -223,7 +244,8 @@ class InterviewController extends BaseController
 
     private function handleValidationErrors($validation, ResponseInterface $response): ResponseInterface
     {
-        session()->flash('errors', $validation->errors());
+        Application::$app->session->flash('errors', $validation->errors());
+        
         $errors = $validation->errors()->all();
         $response->getBody()->write($this->render('interviews.create', ['errors' => $errors]));
         return $response;
@@ -298,8 +320,28 @@ class InterviewController extends BaseController
         }
     }
 
-    /*public function find(ServerRequestInterface $requst,$interviewDate):ResponseInterface
-    {
+    public function delete(ServerRequestInterface $request,$interviewDate):ResponseInterface
+    {   
+        // Check for method spoofing
+        $method = $request->getParsedBody()['_method'] ?? 'POST'; // Default to POST if _method is not set
 
-    }*/
+        if ($method !== 'DELETE') {
+            // If it's not a DELETE request (after method spoofing), return a 405 Method Not Allowed
+            return new Response('Method Not Allowed', 405);
+        }
+
+
+        $id = $request->getAttribute('id');
+        if (!is_numeric($id)) {
+            return new Response('Invalid ID.', 400); // 400 Bad Request for invalid ID
+        }
+    
+        $id = (int) $id; 
+        $result = interview::delete($id);
+        if($result){
+            return new RedirectResponse('/interview');
+        }else {
+            return new Response('Failed to delete interview.', 500);
+        }
+    }
 }

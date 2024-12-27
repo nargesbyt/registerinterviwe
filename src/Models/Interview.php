@@ -39,7 +39,7 @@ class Interview extends \RedBeanPHP\SimpleModel
         :reasonForJob, :interviewResult, :internship, :freetime, :englishLevel, :employmentAdv,
         :computerSkill, :knowAboutUs, :haveFriendHere, :wayToCome, :lastReadBook, :characterType,
         :coverType, :migrateIntention)');
-        
+
         $statement->bindParam('firstname', $data['firstname']);
         $statement->bindParam('lastname', $data['lastname']);
         $statement->bindParam('education', $data['education']);
@@ -79,13 +79,29 @@ class Interview extends \RedBeanPHP\SimpleModel
         //return R::load('interview',$id);
         $pdo = Application::$app->pdo;
         try {
-            $statement = $pdo->prepare('Select * From `interviews` where id=:id');
+            $statement = $pdo->prepare("SELECT interviews.*, careerFields.field 
+                FROM interviews 
+                LEFT JOIN careerFields ON interviews.careerFieldId = careerFields.id 
+                WHERE interviews.id=:id");
             //var_dump($id);
             $statement->execute(['id' => $id]);
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            //var_dump($result);  // This should show the fetched row or 'false' if no match is found
+            $interview = $statement->fetch(PDO::FETCH_ASSOC);
+            
+            // Convert the integer value to a string for fields
+            if (is_array($interview)) {
+                $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus'] ?? null);
+                $interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill'] ?? null);
+                $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel'] ?? null);
+                $interview['field'] = $interview['field'] ?? 'نامشخص';  // In case careerField is null
+                $interview['internship'] = self::getBoolLabel($interview['internship'] ?? null);
+                $interview['knowAboutUs'] = self::getBoolLabel($interview['knowAboutUs'] ?? null);
+                $interview['haveFriendHere'] = self::getBoolLabel($interview['haveFriendHere'] ?? null);
+                $interview['migrateIntention'] = self::getBoolLabel($interview['migrateIntention'] ?? null);
+                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType'] ?? null);
+            }
 
-            return $result === false ? null : $result;  // Return null if no results were found
+            return $interview === false ? null : $interview;  // Return null if no results were found
+
         } catch (PDOException $e) {
             // Log or handle error here
             error_log("PDO Error: " . $e->getMessage());
@@ -114,15 +130,15 @@ class Interview extends \RedBeanPHP\SimpleModel
         foreach ($interviews as &$interview) {
             // Convert the integer value to a string for fields
             if (is_array($interview)) {
-                $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus']?? null);
-                //$interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill']?? null);
-                $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel']?? null);
+                $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus'] ?? null);
+                $interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill'] ?? null);
+                $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel'] ?? null);
                 $interview['field'] = $interview['field'] ?? 'نامشخص';  // In case careerField is null
-                $interview['internship'] = self::getBoolLabel($interview['internship']?? null);
-                $interview['knowAboutUs'] = self::getBoolLabel($interview['knowAboutUs']?? null);
-                $interview['haveFriendHere'] = self::getBoolLabel($interview['haveFriendHere']?? null);
-                $interview['migrateIntention'] = self::getBoolLabel($interview['migrateIntention']?? null);
-                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType']?? null);
+                $interview['internship'] = self::getBoolLabel($interview['internship'] ?? null);
+                $interview['knowAboutUs'] = self::getBoolLabel($interview['knowAboutUs'] ?? null);
+                $interview['haveFriendHere'] = self::getBoolLabel($interview['haveFriendHere'] ?? null);
+                $interview['migrateIntention'] = self::getBoolLabel($interview['migrateIntention'] ?? null);
+                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType'] ?? null);
             }
         }
 
@@ -196,7 +212,7 @@ class Interview extends \RedBeanPHP\SimpleModel
     }
 
 
-    public static function update(array $params,$id): bool
+    public static function update(array $params, $id): bool
     {
         $interview = self::getById($id);
         if ($interview !== null) {
@@ -252,7 +268,7 @@ class Interview extends \RedBeanPHP\SimpleModel
             $statement->bindParam('fatherJob', $params['fatherJob']);
             $statement->bindParam('reasonForJob', $params['reasonForJob']);
             $statement->bindParam('interviewResult', $params['interviewResult']);
-            $statement->bindParam('internship',$params['internship']);
+            $statement->bindParam('internship', $params['internship']);
             $statement->bindParam('freetime', $params['freetime']);
             $statement->bindParam('englishLevel', $params['englishLevel']);
             $statement->bindParam('employmentAdv', $params['employmentAdv']);
@@ -264,7 +280,7 @@ class Interview extends \RedBeanPHP\SimpleModel
             $statement->bindParam('characterType', $params['characterType']);
             $statement->bindParam('coverType', $params['coverType']);
             $statement->bindParam('migrateIntention', $params['migrateIntention']);
-            $statement->bindParam('id',$id);
+            $statement->bindParam('id', $id);
 
             return $statement->execute();
         }
@@ -274,12 +290,23 @@ class Interview extends \RedBeanPHP\SimpleModel
     public static function delete(int $id)
     {
         $interview = self::getById($id);
-        if ($interview !== null) {
-            $pdo = Application::$app->pdo;
-            $statement = $pdo->prepare('Delete From `interviews`  where id=:id');
-            $statement->bindParam('id', $id);
-            return $statement->execute();
+        if ($interview === null) {
+            return false; // Return false if no interview was found
         }
+        try {
+            // Prepare the SQL delete statement
+            $pdo = Application::$app->pdo;
+            $statement = $pdo->prepare('DELETE FROM `interviews` WHERE id = :id');
+            $statement->bindParam(':id', $id, PDO::PARAM_INT); // Bind the ID parameter safely
+    
+            // Execute the statement and return whether it was successful
+            return $statement->execute();
+        } catch (\PDOException $e) {
+            // Log the error (optional) and return false in case of failure
+            error_log('Database error: ' . $e->getMessage());
+            return false;
+        }
+
     }
     public static function findByDate(DateTime $interviewDate)
     {

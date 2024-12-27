@@ -6,8 +6,12 @@ use Morilog\Jalali\Jalalian;
 
 class DateConversionService
 {
-    public function convertInterviewDates(array &$interviews): void
-    {
+    public function convertInterviewDates(&$interviews): void
+    {    
+        if (!is_array($interviews)) {
+            $interviews = [$interviews]; // Convert the single interview to an array
+        }
+
         foreach ($interviews as &$interview) {
             if (isset($interview['interviewDate'])) {
                 // Convert Gregorian date to Persian
