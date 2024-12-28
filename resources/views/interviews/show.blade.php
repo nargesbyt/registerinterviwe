@@ -7,30 +7,31 @@
 </head>
 
 <body dir=rtl>
-        
-            <div class="col-md-12 mb-8">
-                <div class="card">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="card shadow-sm mx-0">
                     <div class="card-body">
-                        <div class="container mt-5">
+                        <div class="container mt-3 px-1">
                             <div class="row">
-                                <div class="col-12 col-md-2 mb-8">
+                                <div class="col-md-2">
                                     <p><strong>تاریخ مصاحبه:</strong>{{ $interview['interviewDate'] }}</p>
                                 </div>
                                 
-                                <div class="col-12 col-md-2 mb-8">
+                                <div class="col-md-2 mb-8">
                                     <p><strong>ساعت شروع مصاحبه :</strong>{{ $interview['interviewTime'] }}</p>
                                 </div>
                                 
-                                <div class="col-12 col-md-2 mb-8">
+                                <div class="col-md-2 mb-8">
                                     <p><strong>سمت :</strong>{{ $interview['field'] }}</p>
                                 </div>
-                                <div class="col-12 col-md-2 mb-8">
+                                <div class="col-md-2 mb-8">
                                     <p><strong>نام :</strong>{{ $interview['firstname'] }}</p>
                                 </div>
-                                <div class="col-12 col-md-2 mb-8">
+                                <div class="col-md-2 mb-8">
                                     <p><strong>نام خانوادگی :</strong>{{ $interview['lastname'] }}</p>
                                 </div>
-                                <div class="col-12 col-md-2 mb-8">
+                                <div class="col-md-2 mb-8">
                                     <p><strong>تحصیلات :</strong>{{ $interview['education'] }}</p>
                                 </div>
                             </div>
@@ -118,6 +119,7 @@
                     </div>
                 </div>
             </div>
+    </div>
     </div>
     <div class="text-center mt-4">
         <a href="/interview" class="btn btn-primary">بازگشت به لیست مصاحبه ها</a>

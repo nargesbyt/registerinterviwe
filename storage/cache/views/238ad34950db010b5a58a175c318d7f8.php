@@ -21,6 +21,33 @@
     </style>
 </head>
 <body dir="rtl">
+    <div class="col-md-12 mb-4">    
+        <div class="card shadow-sm mx-0">
+            <div class="card-body">
+                <div class="container mt-3 px-1">
+                    <form action="/interview" method="GET">
+                        <div class="container mt-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text" name="interviewDate" class="form-control" placeholder="تاریخ مصاحبه" value="<?php echo e($interviewDate); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="education" class="form-control" placeholder="تحصیلات" value="<?php echo e($education); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="careerfield" class="form-control" placeholder="سمت " value="<?php echo e($careerfield); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary w-100">جستجو</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-4">
         <!-- Page Title -->
         <h1 class="text-center mb-4" style="font-size: 2rem; font-weight: bold;">لیست مصاحبه ها</h1>
@@ -31,7 +58,6 @@
                 <div class="col-md-12 mb-4">
                     <div class="card shadow-sm mx-0">
                         <div class="card-body">
-                        <div class="container mt-3 px-1">
                                 <div class="row">
                                     <!-- Date of Interview -->
                                     <div class="col-md-2">
@@ -58,6 +84,7 @@
                                         <p><strong>تحصیلات :</strong> <?php echo e($interview['education']); ?></p>
                                     </div>
                                 </div>
+                        
                                 
                                 <!-- Second Row with Additional Information -->
                                 <div class="row">
@@ -149,7 +176,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        
                         <!-- Edit and Delete Buttons -->
                         <div class="mt-3">
                             <a href="/interview/<?php echo e($interview['id']); ?>/edit" class="btn btn-warning btn-sm me-2">
@@ -158,7 +185,7 @@
 
                             <form action="/interview/<?php echo e($interview['id']); ?>/delete" method="POST" style="display: inline;">
                                 <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا مطمئنید؟')">حذف</button>
+                                <button type="submit" class="btn btn-danger btn-sm " onclick="return confirm('آیا مطمئنید؟')">حذف</button>
                             </form>
                         </div>
                     </div>
@@ -166,6 +193,7 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
+   
         <!-- Pagination Controls -->
         <div class="d-flex justify-content-center mt-4">
             <ul class="pagination">

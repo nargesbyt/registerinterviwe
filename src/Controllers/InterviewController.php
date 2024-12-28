@@ -20,7 +20,7 @@ use Rakit\Validation\ErrorBag;
 
 class InterviewController extends BaseController
 {
-    public function index(ServerRequestInterface $request): ResponseInterface
+    /*public function index(ServerRequestInterface $request): ResponseInterface
     {
         // Get the current page from the query string (default is 1)
         $page = (int) ($request->getQueryParams()['page'] ?? 1);
@@ -46,7 +46,49 @@ class InterviewController extends BaseController
             'totalPages' => $totalPages,
         ]));
 
+    }*/
+
+    public function index(ServerRequestInterface $request): ResponseInterface
+    {
+        // Get the current page from the query string (default is 1)
+        $page = (int) ($request->getQueryParams()['page'] ?? 1);
+
+        // Get search filters from the query string
+        $interviewDate = $request->getQueryParams()['interviewDate'] ?? '';
+        $education = $request->getQueryParams()['education'] ?? '';
+        $careerfield = $request->getQueryParams()['careerfield'] ?? '';
+
+        // Set the number of records per page
+        $recordsPerPage = 10;
+
+        // Fetch the interviews for the current page with the search filters
+        $interviews = Interview::list($page, $recordsPerPage, [
+            'interviewDate' => $interviewDate,
+            'education' => $education,
+            'careerfield' => $careerfield,
+        ]);
+
+        // Convert interview dates to Persian format
+        (new DateConversionService())->convertInterviewDates($interviews);
+
+        // Get the total number of interviews with filters applied
+        $totalCount = Interview::getFilteredCount($interviewDate, $education, $careerfield);
+        
+        // Calculate total pages for pagination
+        $paginationService = new PaginationService();
+        $totalPages = $paginationService->calculateTotalPages($totalCount, $recordsPerPage);
+
+        // Return response with rendered view
+        return new HtmlResponse($this->render('interviews.index', [
+            'interviews' => $interviews,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'interviewDate' => $interviewDate,
+            'education' => $education,
+            'careerfield' => $careerfield,
+        ]));
     }
+    
 
     public function get(ServerRequestInterface $request): ResponseInterface
     {
@@ -229,7 +271,7 @@ class InterviewController extends BaseController
             'address' => 'max:50',
             'maritalStatus' => 'numeric|min:0|max:4',
             'childNum' => 'numeric|between:0,10',
-            'phoneNum' => 'max:11',
+            'phoneNum' => 'max:12|numeric',
             'employmentHistory' => 'max:10000',
             'fatherJob' => 'max:20',
             'internship' => 'integer|in:0,1',

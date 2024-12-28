@@ -108,7 +108,7 @@ class Interview extends \RedBeanPHP\SimpleModel
             return null; // return null or handle differently
         }
     }
-    public static function list(int $page = 1, int $recordsPerPage = 10): ?array
+    /*public static function list(int $page = 1, int $recordsPerPage = 10): ?array
     {
         $pdo = Application::$app->pdo;
         // Calculate the offset based on the current page and records per page
@@ -145,6 +145,140 @@ class Interview extends \RedBeanPHP\SimpleModel
 
         return $interviews;
     }
+
+    */
+
+    public static function list(int $page = 1, int $recordsPerPage = 10, array $filters = []): ?array
+    {
+        $pdo = Application::$app->pdo;
+
+        // Calculate the offset based on the current page and records per page
+        $offset = max(0, ($page - 1) * $recordsPerPage);
+
+        // Base SQL query
+        $sql = "SELECT interviews.*, careerFields.field 
+                FROM interviews 
+                LEFT JOIN careerFields ON interviews.careerFieldId = careerFields.id";
+
+        // Array to hold filter conditions
+        $whereConditions = [];
+        $params = [];
+
+        // Apply filters to the query
+        if (!empty($filters['interviewDate'])) {
+            $whereConditions[] = "interviews.interviewDate LIKE :interviewDate";
+            $params[':interviewDate'] = '%' . $filters['interviewDate'] . '%';
+        }
+
+        if (!empty($filters['education'])) {
+            $whereConditions[] = "interviews.education LIKE :education";
+            $params[':education'] = '%' . $filters['education'] . '%';
+        }
+
+        if (!empty($filters['careerfield'])) {
+            $whereConditions[] = "careerFields.field LIKE :careerfield";
+            $params[':careerfield'] = '%' . $filters['careerfield'] . '%';
+        }
+
+        // If there are any filters, add them to the SQL query
+        if (count($whereConditions) > 0) {
+            $sql .= " WHERE " . implode(' AND ', $whereConditions);
+        }
+
+        // Add pagination to the query
+        $sql .= " LIMIT :limit OFFSET :offset";
+
+        // Prepare the statement
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':limit', $recordsPerPage, PDO::PARAM_INT);
+        $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        // Bind the filter parameters dynamically
+        foreach ($params as $key => $value) {
+            $statement->bindValue($key, $value);
+        }
+
+        // Execute the statement
+        $statement->execute();
+
+        // Fetch all matching interviews
+        $interviews = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($interviews as &$interview) {
+            // Convert the integer value to a string for fields
+            if (is_array($interview)) {
+                $interview['maritalStatus'] = self::getMaritalStatusLabel($interview['maritalStatus'] ?? null);
+                $interview['computerSkill'] = self::getComputerSkillLabel($interview['computerSkill'] ?? null);
+                $interview['englishLevel'] = self::getEnglishLevelLabel($interview['englishLevel'] ?? null);
+                $interview['field'] = $interview['field'] ?? 'نامشخص';  // In case careerField is null
+                $interview['internship'] = self::getBoolLabel($interview['internship'] ?? null);
+                $interview['knowAboutUs'] = self::getBoolLabel($interview['knowAboutUs'] ?? null);
+                $interview['haveFriendHere'] = self::getBoolLabel($interview['haveFriendHere'] ?? null);
+                $interview['migrateIntention'] = self::getBoolLabel($interview['migrateIntention'] ?? null);
+                $interview['characterType'] = self::getcharacterTypeLabel($interview['characterType'] ?? null);
+            }
+        }
+
+
+        return $interviews;
+    }
+
+    public static function getFilteredCount($interviewDate, $education, $careerfield)
+    {
+        $pdo = Application::$app->pdo;
+
+        // Base SQL query to count records
+        $sql = "SELECT COUNT(*) 
+                FROM interviews 
+                LEFT JOIN careerFields ON interviews.careerFieldId = careerFields.id";
+
+        // Array to hold filter conditions
+        $whereConditions = [];
+        $params = [];
+
+        // Apply filters to the query
+        if ($interviewDate) {
+            $whereConditions[] = "interviews.interviewDate LIKE :interviewDate";
+            $params[':interviewDate'] = '%' . $interviewDate . '%';
+        }
+
+        if ($education) {
+            $whereConditions[] = "interviews.education LIKE :education";
+            $params[':education'] = '%' . $education . '%';
+        }
+
+        if ($careerfield) {
+            $whereConditions[] = "careerFields.field LIKE :careerfield";
+            $params[':careerfield'] = '%' . $careerfield . '%';
+        }
+
+        // Add filters to the SQL query if needed
+        if (count($whereConditions) > 0) {
+            $sql .= " WHERE " . implode(' AND ', $whereConditions);
+        }
+
+        // Prepare and execute the statement
+        $statement = $pdo->prepare($sql);
+
+        // Bind the filter parameters dynamically
+        foreach ($params as $key => $value) {
+            $statement->bindValue($key, $value);
+        }
+
+        // Execute and return the count
+        $statement->execute();
+        return $statement->fetchColumn();
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static function getcharacterTypeLabel($characterType)
     {
         $characterTypes = [
